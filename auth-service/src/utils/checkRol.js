@@ -1,13 +1,13 @@
 export const checkRol = (allowedRoles) => (req, res, next) => {
   try {
     const { user } = req;
-    console.log({ user });
 
     if (!user) {
       return res.status(403).send("USER_NOT_FOUND");
     }
 
-    const userRole = user.type;
+    const userRole =
+      user.roles && Array.isArray(user.roles) ? user.roles[0] : undefined;
     if (!allowedRoles.includes(userRole)) {
       return res.status(403).send("ACCESS_DENIED");
     }
