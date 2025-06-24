@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 async function connectDB() {
   dotenv.config();
   const mongoURI = process.env.MONGO_URI_AUTH;
-  console.log("Users Service intentando conectar a:", mongoURI);
 
   try {
     const connection = await mongoose.connect(mongoURI, {
@@ -12,14 +11,14 @@ async function connectDB() {
       useUnifiedTopology: true,
     });
     console.log(
-      "MongoDB (Users Service) conectado a:",
+      "MongoDB (Auth Service) conected to:",
       connection.connection.host,
       connection.connection.port,
       connection.connection.name
     );
     return connection.connection;
   } catch (error) {
-    console.error("Error de conexión a MongoDB (Users Service):", error);
+    console.error("MongoDB connection error (Auth Service):", error);
     throw error;
   }
 }

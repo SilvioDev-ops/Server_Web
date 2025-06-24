@@ -20,14 +20,14 @@ userProfileRouter.get(
 userProfileRouter.get(
   "/getAllUsersProfile",
   authMiddleware,
-  checkRol(["Client"]),
+  checkRol(["Admin"]),
   getAllUsersProfileHandler
 );
 
 userProfileRouter.delete(
   "/deleteUserProfile/:userId",
   authMiddleware,
-  checkRol(["Client"]),
+  checkRol(["Client", "Admin"]),
   deleteUserProfileHandler
 );
 

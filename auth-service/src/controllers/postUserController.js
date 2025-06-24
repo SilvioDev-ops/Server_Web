@@ -6,6 +6,7 @@ import { tokenSign } from "../middlewares/handleJsonWebToken.js";
 
 const postUserController = async (req, res) => {
   const User = getUserModel();
+  let defaultRole = "Client";
   const { email, password, firstName, lastName } = req.body;
 
   try {

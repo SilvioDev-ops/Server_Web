@@ -1,13 +1,11 @@
+import { validationResult } from "express-validator";
 import postUserController from "../controllers/postUserController.js";
 
 export const postUserHandler = async (req, res) => {
   try {
-    const { email, password, firstName, lastName } = req.body;
-
-    if (!email || !password || !firstName || !lastName) {
-      return res
-        .status(400)
-        .json({ error: "Todos los campos son requeridos." });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
     await postUserController(req, res);
