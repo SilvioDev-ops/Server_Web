@@ -7,6 +7,7 @@ import { authMiddleware } from "../middlewares/authenticateToken.js";
 import { registerValidator } from "../validators/registerValidator.js";
 import { loginValidator } from "../validators/loginValidator.js";
 import { updatePasswordValidator } from "../validators/updatePasswordValidator.js";
+import { forgotPasswordHandler } from "../handlers/forgotPasswordHandler.js";
 import { checkRol } from "../utils/checkRol.js";
 const userRouter = express.Router();
 
@@ -28,5 +29,7 @@ userRouter.get(
   checkRol(["Client", "Admin"]),
   getUserHandler
 );
+
+userRouter.post("/forgot-password", forgotPasswordHandler);
 
 export default userRouter;

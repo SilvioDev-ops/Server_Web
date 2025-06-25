@@ -4,26 +4,20 @@ const membershipSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "UserProfile", // Asume que tienes un modelo UserProfile
+      ref: "UserProfile",
       required: true,
       index: true,
     },
-    // NUEVO CAMPO: Referencia al plan de membresía que el usuario compró
     planId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "MembershipPlan", // Referencia al nuevo modelo
-      required: true, // Ahora es requerido porque cada membresía activa viene de un plan
+      ref: "MembershipPlan",
+      required: true,
     },
-    // membershipType, price, durationValue, durationUnit, currency
-    // Estos campos podrían ser redundantes si siempre se copian del plan,
-    // pero pueden ser útiles si quieres que la membresía del usuario pueda tener
-    // variaciones o si un plan cambia y no quieres que afecte membresías existentes.
-    // Los dejaremos para tu flexibilidad, pero se poblarían desde 'planId'.
-    membershipType: { // Ej: "Basic", "Premium", "VIP"
+
+    membershipType: {
       type: String,
-      // No required aquí si siempre se copia de planId, pero puede ser útil como backup
     },
-    price: { // Precio pagado por el usuario (puede ser diferente al precio del plan si hay descuentos)
+    price: {
       type: Number,
       required: true,
       min: 0,
@@ -43,7 +37,6 @@ const membershipSchema = new mongoose.Schema(
       required: true,
       default: "months",
     },
-    // --- Campos de estado y fechas de la suscripción específica del usuario ---
     startDate: {
       type: Date,
       default: Date.now,
@@ -53,7 +46,7 @@ const membershipSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    nextRenewalDate: { // Para auto-renovación
+    nextRenewalDate: {
       type: Date,
       required: false,
     },
@@ -64,8 +57,8 @@ const membershipSchema = new mongoose.Schema(
       index: true,
     },
     paymentTransactionId: {
-      type: String, // O ObjectId si tienes un modelo PaymentTransaction
-      ref: "PaymentTransaction", // Si es ObjectId
+      type: String,
+      ref: "PaymentTransaction",
       required: false,
     },
     cancellationDate: {
@@ -92,10 +85,11 @@ const membershipSchema = new mongoose.Schema(
   }
 );
 
-// Virtuals y Pre-hooks (mantener los que ya tenías)
 membershipSchema.virtual("isActive").get(function () {
   const now = new Date();
-  return this.status === "Active" && this.startDate <= now && this.endDate >= now;
+  return (
+    this.status === "Active" && this.startDate <= now && this.endDate >= now
+  );
 });
 
 membershipSchema.virtual("isExpired").get(function () {
