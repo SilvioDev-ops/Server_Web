@@ -1,13 +1,8 @@
-import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
-import { getUserModel } from "../getModel.js";
-const UserProfile = getUserModel();
-const AUTH_SERVICE_API_URL_PUT_USER = process.env.AUTH_SERVICE_API_URL_PUT_USER;
+import { getUserModel } from "../getModel.js"; // Suponiendo que getUserModel es para tu modelo de UserProfile
+
+const UserProfile = getUserModel(); // Obtén el modelo de UserProfile (ej. UserProfile o User)
 
 export const putUserProfileController = async (userId, userData) => {
-  console.log(userData);
-
   try {
     const updatedProfile = await UserProfile.findByIdAndUpdate(
       userId,
@@ -16,32 +11,13 @@ export const putUserProfileController = async (userId, userData) => {
     );
 
     if (!updatedProfile) {
-      throw new Error("Perfil de usuario no encontrado");
-    }
-
-    if (userData.email || userData.password) {
-      const authServiceApiUrl = `${AUTH_SERVICE_API_URL_PUT_USER}/${userData.userId}`;
-      try {
-        const authResponse = await axios.put(authServiceApiUrl, {
-          email: userData.email,
-          password: userData.password,
-        });
-        console.log("Respuesta de auth-service:", authResponse.data);
-      } catch (authError) {
-        console.error(
-          "Error al actualizar usuario en auth-service:",
-          authError.message
-        );
-        throw new Error(
-          "Error al actualizar usuario de autenticación: " + authError.message
-        );
-      }
+      throw new Error("Perfil de usuario no encontrado.");
     }
     return updatedProfile;
   } catch (error) {
     console.error(
       "Error al actualizar el perfil de usuario en el controlador:",
-      error
+      error.message
     );
     throw error;
   }

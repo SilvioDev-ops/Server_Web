@@ -6,9 +6,15 @@ import { deleteUserProfileHandler } from "../handlers/deleteUserProfileHandler.j
 import { putUserProfileHandler } from "../handlers/putUserProfileHandler.js";
 import { checkRol } from "../utils/checkRol.js";
 import { authMiddleware } from "../middlewares/authenticateToken.js";
+import { postUserProfileValidator } from "../validators/postUserProfileValidator.js";
+import { putUserProfileValidator } from "../validators/putUserProfileValidator.js";
 const userProfileRouter = Router();
 
-userProfileRouter.post("/postUserProfile", postUserProfileHandler);
+userProfileRouter.post(
+  "/postUserProfile",
+  postUserProfileValidator,
+  postUserProfileHandler
+);
 
 userProfileRouter.get(
   "/getUserProfile/:userId",
@@ -34,7 +40,8 @@ userProfileRouter.delete(
 userProfileRouter.put(
   "/putUserProfile/:userId",
   authMiddleware,
-  checkRol(["Admin"]),
+  checkRol(["Admin", "Client"]),
+  putUserProfileValidator,
   putUserProfileHandler
 );
 

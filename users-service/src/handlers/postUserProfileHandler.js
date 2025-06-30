@@ -1,6 +1,12 @@
+import { validationResult } from "express-validator";
 import { postUserProfileController } from "../controllers/postUserProfileController.js";
 
 export const postUserProfileHandler = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { userId, email, firstName, lastName, phone } = req.body;
   const userData = {
     userId,
