@@ -1,8 +1,6 @@
 import axios from "axios";
 
 export const getUserFromAuthService = async (userId, token) => {
-  console.log(userId, token);
-
   try {
     const AUTH_SERVICE_API_URL_GET_USER =
       process.env.AUTH_SERVICE_API_URL_GET_USER;

@@ -2,6 +2,8 @@ import { getUserModel } from "../getModel.js";
 import crypto from "crypto";
 import axios from "axios";
 import dotenv from "dotenv";
+import logger from "../utils/logger.js";
+
 dotenv.config();
 
 const NOTIFICATION_SERVICE_URL =
@@ -17,12 +19,11 @@ export const forgotPasswordController = async (email) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      console.log(`Attempted password reset for non-existent email: ${email}`);
+      logger.warn(`Attempted password reset for non-existent email`, { email });
       return;
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-
     const resetTokenExpires = Date.now() + 3600000;
 
     user.passwordResetToken = resetToken;
@@ -95,17 +96,25 @@ El equipo de [Nombre de tu Aplicación]
 </body>
 </html>
 `;
+    const fullNotificationServiceUrl = `${NOTIFICATION_SERVICE_URL}`;
 
-    await axios.post(`${NOTIFICATION_SERVICE_URL}`, {
+    await axios.post(fullNotificationServiceUrl, {
       to: user.email,
       subject: emailSubject,
       text: emailText,
       html: emailHtml,
     });
 
-    console.log(`Password reset email sent to: ${user.email}`);
+    logger.audit(`Password reset email sent successfully`, {
+      userId: user._id,
+      email: user.email,
+    });
   } catch (error) {
-    console.error("Error in forgotPasswordController:", error);
+    logger.error("Error in forgotPasswordController", {
+      message: error.message,
+      stack: error.stack,
+      email,
+    });
     throw new Error("Failed to process password reset request.");
   }
 };

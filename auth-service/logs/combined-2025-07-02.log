@@ -1,0 +1,104 @@
+{"timestamp":"2025-07-02 13:32:59","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 13:32:59","level":"info","message":"User profile created in users-service"}
+{"timestamp":"2025-07-02 13:32:59","level":"error","message":"Error sending verification email Request failed with status code 404"}
+{"timestamp":"2025-07-02 13:32:59","level":"error","message":"Error sending verification email, but user created"}
+{"timestamp":"2025-07-02 13:37:32","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 13:37:32","level":"info","message":"User profile created in users-service"}
+{"timestamp":"2025-07-02 13:37:34","level":"info","message":"Verification email sent to: pruebawebservice@gmail.com"}
+{"timestamp":"2025-07-02 14:17:57","level":"error","message":"Error in localLoginController req is not defined"}
+{"timestamp":"2025-07-02 14:20:22","level":"error","message":"Error in localLoginController req is not defined"}
+{"timestamp":"2025-07-02 14:21:53","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 14:23:06","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 14:26:41","level":"error","message":"Error in forgotPasswordController Request failed with status code 404"}
+{"timestamp":"2025-07-02 14:44:28","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 14:45:25","level":"info","message":"Password has been reset successfully for user"}
+{"timestamp":"2025-07-02 14:50:16","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 14:52:04","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 14:52:04","level":"error","message":"Error calling users-service API Request failed with status code 500"}
+{"timestamp":"2025-07-02 14:52:04","level":"error","message":"Error creating user profile in users-service, initiating rollback"}
+{"timestamp":"2025-07-02 14:52:04","level":"warn","message":"User deleted successfully due to rollback"}
+{"timestamp":"2025-07-02 14:52:27","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 14:52:27","level":"info","message":"User profile created in users-service"}
+{"timestamp":"2025-07-02 14:52:30","level":"info","message":"Verification email sent to: pruebawebservice10@gmail.com"}
+{"timestamp":"2025-07-02 14:53:13","level":"info","message":"Email verified successfully for user"}
+{"timestamp":"2025-07-02 14:56:33","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 14:56:45","level":"error","message":"Error in refreshTokenController crypto.randomBytes is not a function"}
+{"timestamp":"2025-07-02 14:57:48","level":"info","message":"Tokens refreshed successfully for user"}
+{"timestamp":"2025-07-02 14:58:17","level":"warn","message":"Refresh token attempt with invalid or expired token"}
+{"timestamp":"2025-07-02 14:58:17","level":"error","message":"Error in refreshTokenController Invalid or expired refresh token."}
+{"timestamp":"2025-07-02 14:58:24","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 14:58:35","level":"info","message":"Tokens refreshed successfully for user"}
+{"timestamp":"2025-07-02 14:58:52","level":"info","message":"Tokens refreshed successfully for user"}
+{"timestamp":"2025-07-02 15:00:52","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:01:07","level":"info","message":"All users fetched successfully for admin view"}
+{"timestamp":"2025-07-02 15:02:09","level":"info","message":"All users fetched successfully for admin view"}
+{"timestamp":"2025-07-02 15:06:47","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:07:19","level":"info","message":"User 686571db982886b9a736b6fe deactivated and refresh token cleared."}
+{"timestamp":"2025-07-02 15:07:29","level":"info","message":"User 686571db982886b9a736b6fe activated."}
+{"timestamp":"2025-07-02 15:11:15","level":"info","message":"User data fetched successfully"}
+{"timestamp":"2025-07-02 15:14:02","level":"info","message":"User updated successfully in putUserController"}
+{"timestamp":"2025-07-02 15:20:48","level":"info","message":"Password reset request processed"}
+{"timestamp":"2025-07-02 15:22:41","level":"info","message":"All users fetched successfully for admin view"}
+{"timestamp":"2025-07-02 15:22:41","level":"info","message":"All users list sent to admin"}
+{"timestamp":"2025-07-02 15:24:35","level":"info","message":"User data fetched successfully"}
+{"timestamp":"2025-07-02 15:24:35","level":"info","message":"User data retrieved successfully by handler"}
+{"timestamp":"2025-07-02 15:25:59","level":"warn","message":"Login attempt with incorrect password"}
+{"timestamp":"2025-07-02 15:25:59","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:25:59","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:26:28","level":"warn","message":"Login attempt with incorrect password"}
+{"timestamp":"2025-07-02 15:26:28","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:26:28","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:26:35","level":"warn","message":"Login attempt with incorrect password"}
+{"timestamp":"2025-07-02 15:26:35","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:26:35","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:27:01","level":"warn","message":"Login attempt with incorrect password"}
+{"timestamp":"2025-07-02 15:27:01","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:27:01","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:27:26","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 15:27:26","level":"info","message":"User profile created in users-service"}
+{"timestamp":"2025-07-02 15:27:28","level":"info","message":"Verification email sent to: pruebawebservice11@gmail.com"}
+{"timestamp":"2025-07-02 15:27:40","level":"warn","message":"Login attempt for unverified email"}
+{"timestamp":"2025-07-02 15:27:40","level":"error","message":"Error in localLoginController Please verify your email to log in."}
+{"timestamp":"2025-07-02 15:27:40","level":"error","message":"Error during login in localLoginHandler: Please verify your email to log in."}
+{"timestamp":"2025-07-02 15:28:49","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 15:28:49","level":"info","message":"User profile created in users-service"}
+{"timestamp":"2025-07-02 15:28:52","level":"info","message":"Verification email sent to: silviojuarez60@gmail.com"}
+{"timestamp":"2025-07-02 15:30:58","level":"info","message":"Email verified successfully for user"}
+{"timestamp":"2025-07-02 15:31:41","level":"warn","message":"Login attempt with non-existent email"}
+{"timestamp":"2025-07-02 15:31:41","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:31:41","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:31:52","level":"warn","message":"Login attempt with incorrect password"}
+{"timestamp":"2025-07-02 15:31:52","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:31:52","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:32:09","level":"warn","message":"Login attempt with incorrect password"}
+{"timestamp":"2025-07-02 15:32:09","level":"error","message":"Error in localLoginController Invalid credentials."}
+{"timestamp":"2025-07-02 15:32:09","level":"error","message":"Error during login in localLoginHandler: Invalid credentials."}
+{"timestamp":"2025-07-02 15:32:28","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:32:28","level":"info","message":"Login request successfully handled"}
+{"timestamp":"2025-07-02 15:36:09","level":"warn","message":"User registration attempt with existing email"}
+{"timestamp":"2025-07-02 15:36:23","level":"info","message":"New user created in Auth Service DB"}
+{"timestamp":"2025-07-02 15:36:23","level":"info","message":"User profile created in users-service"}
+{"timestamp":"2025-07-02 15:36:26","level":"info","message":"Verification email sent to: silviojuarez@gmail.com"}
+{"timestamp":"2025-07-02 15:38:56","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:38:56","level":"info","message":"Login request successfully handled"}
+{"timestamp":"2025-07-02 15:40:45","level":"info","message":"User updated successfully in putUserController"}
+{"timestamp":"2025-07-02 15:40:45","level":"info","message":"Password update request successfully handled"}
+{"timestamp":"2025-07-02 15:40:55","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:40:55","level":"info","message":"Login request successfully handled"}
+{"timestamp":"2025-07-02 15:43:07","level":"info","message":"Tokens refreshed successfully for user"}
+{"timestamp":"2025-07-02 15:43:07","level":"info","message":"Refresh token request successfully handled"}
+{"timestamp":"2025-07-02 15:43:09","level":"warn","message":"Refresh token attempt with invalid or expired token"}
+{"timestamp":"2025-07-02 15:43:09","level":"error","message":"Error in refreshTokenController Invalid or expired refresh token."}
+{"timestamp":"2025-07-02 15:43:09","level":"error","message":"Error in refreshTokenHandler: Invalid or expired refresh token."}
+{"timestamp":"2025-07-02 15:44:34","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:44:34","level":"info","message":"Login request successfully handled"}
+{"timestamp":"2025-07-02 15:45:01","level":"info","message":"Password reset request processed"}
+{"timestamp":"2025-07-02 15:45:55","level":"warn","message":"Password reset attempt with invalid or expired token"}
+{"timestamp":"2025-07-02 15:45:55","level":"error","message":"Error in resetPasswordController Password reset token is invalid or has expired."}
+{"timestamp":"2025-07-02 15:45:55","level":"error","message":"Error in resetPasswordHandler: Password reset token is invalid or has expired."}
+{"timestamp":"2025-07-02 15:47:43","level":"info","message":"User logged in and tokens issued"}
+{"timestamp":"2025-07-02 15:47:43","level":"info","message":"Login request successfully handled"}
+{"timestamp":"2025-07-02 15:48:19","level":"info","message":"User 68657c2764d6536e8263d2e5 deactivated and refresh token cleared."}
+{"timestamp":"2025-07-02 15:48:19","level":"info","message":"User status update request successfully handled"}
+{"timestamp":"2025-07-02 15:52:47","level":"info","message":"Email verified successfully for user"}
+{"timestamp":"2025-07-02 15:52:47","level":"info","message":"Email verification request successfully handled"}

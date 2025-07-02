@@ -13,6 +13,11 @@ import { resetPasswordValidator } from "../validators/resetPasswordValidator.js"
 import { verifyEmailHandler } from "../handlers/verifyEmailHandler.js";
 import { refreshTokenHandler } from "../handlers/refreshTokenHandler.js";
 import { refreshTokenValidator } from "../validators/refreshTokenValidator.js";
+import { getAllUsersHandler } from "../handlers/getAllUsersHandler.js";
+import { updateUserStatusHandler } from "../handlers/updateUserStatusHandler.js";
+import { updateUserStatusValidator } from "../validators/updateUserStatusValidator.js";
+import { forgotPasswordValidation } from "../validators/forgotPasswordValidation.js";
+import { verifyEmailValidation } from "../validators/verifyEmailValidation.js";
 import { checkRol } from "../utils/checkRol.js";
 const userRouter = express.Router();
 
@@ -41,10 +46,29 @@ userRouter.post(
   resetPasswordHandler
 );
 
-userRouter.post("/forgot-password", forgotPasswordHandler);
+userRouter.post(
+  "/forgot-password",
+  forgotPasswordValidation,
+  forgotPasswordHandler
+);
 
-userRouter.get("/verify-email", verifyEmailHandler);
+userRouter.get("/verify-email", verifyEmailValidation, verifyEmailHandler);
 
 userRouter.post("/refresh-token", refreshTokenValidator, refreshTokenHandler);
+
+userRouter.get(
+  "/getAllUsers",
+  authMiddleware,
+  checkRol(["Admin"]),
+  getAllUsersHandler
+);
+
+userRouter.post(
+  "/updateUserStatus/:userId",
+  authMiddleware,
+  checkRol(["Admin"]),
+  updateUserStatusValidator,
+  updateUserStatusHandler
+);
 
 export default userRouter;

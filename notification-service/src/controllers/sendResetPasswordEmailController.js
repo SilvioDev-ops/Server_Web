@@ -4,7 +4,6 @@ import nodemailer from "nodemailer";
 export const sendResetPasswordEmailController = async (mailOptions) => {
   try {
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email enviado: %s", info.messageId);
     if (
       process.env.NODE_ENV === "development" &&
       nodemailer.getTestMessageUrl(info)

@@ -1,4 +1,6 @@
+// auth-service/src/controllers/verifyEmailController.js
 import { getUserModel } from "../getModel.js";
+import logger from "../utils/logger.js"; // <-- Importa el logger
 
 export const verifyEmailController = async (token) => {
   const User = getUserModel();
@@ -10,6 +12,10 @@ export const verifyEmailController = async (token) => {
     });
 
     if (!user) {
+      logger.warn(
+        "Email verification attempt with invalid or already used token",
+        { token }
+      );
       throw new Error(
         "Verification token is invalid or has already been used."
       );
@@ -20,9 +26,21 @@ export const verifyEmailController = async (token) => {
 
     await user.save();
 
+    logger.audit("User email verified successfully", {
+      userId: user._id,
+      email: user.email,
+    });
+    logger.info("Email verified successfully for user", {
+      userId: user._id,
+      email: user.email,
+    });
     return { message: "Email verified successfully." };
   } catch (error) {
-    console.error("Error in verifyEmailController:", error);
+    logger.error("Error in verifyEmailController", {
+      message: error.message,
+      stack: error.stack,
+      token,
+    });
     throw error;
   }
 };
