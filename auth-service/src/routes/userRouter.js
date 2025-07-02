@@ -8,6 +8,11 @@ import { registerValidator } from "../validators/registerValidator.js";
 import { loginValidator } from "../validators/loginValidator.js";
 import { updatePasswordValidator } from "../validators/updatePasswordValidator.js";
 import { forgotPasswordHandler } from "../handlers/forgotPasswordHandler.js";
+import { resetPasswordHandler } from "../handlers/resetPasswordHandler.js";
+import { resetPasswordValidator } from "../validators/resetPasswordValidator.js";
+import { verifyEmailHandler } from "../handlers/verifyEmailHandler.js";
+import { refreshTokenHandler } from "../handlers/refreshTokenHandler.js";
+import { refreshTokenValidator } from "../validators/refreshTokenValidator.js";
 import { checkRol } from "../utils/checkRol.js";
 const userRouter = express.Router();
 
@@ -30,6 +35,16 @@ userRouter.get(
   getUserHandler
 );
 
+userRouter.post(
+  "/reset-password",
+  resetPasswordValidator,
+  resetPasswordHandler
+);
+
 userRouter.post("/forgot-password", forgotPasswordHandler);
+
+userRouter.get("/verify-email", verifyEmailHandler);
+
+userRouter.post("/refresh-token", refreshTokenValidator, refreshTokenHandler);
 
 export default userRouter;

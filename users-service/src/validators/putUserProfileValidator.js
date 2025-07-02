@@ -1,13 +1,6 @@
-// users-service/src/middlewares/putUserProfileValidator.js
 import { body } from "express-validator";
 
 export const putUserProfileValidator = [
-  body("email")
-    .optional()
-    .isEmail()
-    .withMessage("Invalid email format.")
-    .normalizeEmail(),
-
   body("firstName")
     .optional()
     .isString()
