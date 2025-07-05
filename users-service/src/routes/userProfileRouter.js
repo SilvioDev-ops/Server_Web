@@ -8,6 +8,8 @@ import { checkRol } from "../utils/checkRol.js";
 import { authMiddleware } from "../middlewares/authenticateToken.js";
 import { postUserProfileValidator } from "../validators/postUserProfileValidator.js";
 import { putUserProfileValidator } from "../validators/putUserProfileValidator.js";
+import { uploadAvatarHandler } from "../handlers/uploadAvatarHandler.js";
+import { uploadAvatarValidator } from "../validators/uploadAvatarValidator.js";
 const userProfileRouter = Router();
 
 userProfileRouter.post(
@@ -43,6 +45,14 @@ userProfileRouter.put(
   checkRol(["Admin", "Client"]),
   putUserProfileValidator,
   putUserProfileHandler
+);
+
+userProfileRouter.post(
+  "/uploadAvatar/:userId",
+  authMiddleware,
+  checkRol(["Client", "Admin"]),
+  uploadAvatarValidator,
+  uploadAvatarHandler
 );
 
 export default userProfileRouter;

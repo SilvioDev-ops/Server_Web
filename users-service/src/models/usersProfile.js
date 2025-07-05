@@ -11,7 +11,7 @@ const userProfileSchema = new Schema(
     email: { type: String, required: true },
     firstName: { type: String },
     lastName: { type: String },
-    avatar: { type: String },
+    avatar: { type: String, default: null },
     phone: { type: String, unique: true, required: true },
     address: {
       street: { type: String },
