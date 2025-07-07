@@ -6,7 +6,7 @@ const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Límite de 5MB por archivo
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);
@@ -52,7 +52,6 @@ export const uploadAvatarHandler = (req, res) => {
     }
 
     try {
-      // El handler sigue pasando req.file.buffer, que ahora el controlador espera como imageBuffer
       const result = await uploadAvatarController(userId, req.file.buffer);
 
       res.status(200).json(result);

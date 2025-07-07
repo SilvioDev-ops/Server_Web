@@ -21,7 +21,7 @@ userProfileRouter.post(
 userProfileRouter.get(
   "/getUserProfile/:userId",
   authMiddleware,
-  checkRol(["Client"]),
+  checkRol(["Client", "Admin"]),
   getUserProfileHandler
 );
 

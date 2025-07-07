@@ -1,8 +1,11 @@
-import { getUserModel } from "../getModel.js"; // Suponiendo que getUserModel es para tu modelo de UserProfile
-
-const UserProfile = getUserModel(); // Obtén el modelo de UserProfile (ej. UserProfile o User)
+import { getUserModel } from "../getModel.js";
+import logger from "../utils/logger.js";
 
 export const putUserProfileController = async (userId, userData) => {
+  const UserProfile = getUserModel();
+
+  logger.debug("Attempting to update user profile", { userId, userData });
+
   try {
     const updatedProfile = await UserProfile.findByIdAndUpdate(
       userId,
@@ -11,13 +14,25 @@ export const putUserProfileController = async (userId, userData) => {
     );
 
     if (!updatedProfile) {
+      logger.warn("User profile not found for update", { userId, userData });
       throw new Error("Perfil de usuario no encontrado.");
     }
+
+    logger.audit("User profile updated successfully", {
+      userId: updatedProfile._id,
+      email: updatedProfile.email,
+      updatedFields: Object.keys(userData),
+    });
+    logger.info("User profile saved to database after update", {
+      userId: updatedProfile._id,
+      email: updatedProfile.email,
+    });
+
     return updatedProfile;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error al actualizar el perfil de usuario en el controlador:",
-      error.message
+      { message: error.message, stack: error.stack, userId, userData }
     );
     throw error;
   }

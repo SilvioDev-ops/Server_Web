@@ -1,6 +1,6 @@
-// src/getModel.js
-import Membership from './models/membershipModel.js';
-import MembershipPlan from './models/membershipPlanModel.js';
+// membership-service/src/getModel.js
+import Membership from "./models/membershipModel.js";
+import MembershipPlan from "./models/membershipPlanModel.js";
 
 export const getMembershipModel = (modelName) => {
   switch (modelName) {
@@ -9,6 +9,8 @@ export const getMembershipModel = (modelName) => {
     case "MembershipPlan":
       return MembershipPlan;
     default:
-      throw new Error(`Model '${modelName}' not found or not handled by getMembershipModel.`);
+      throw new Error(
+        `Model '${modelName}' not found or not handled by getMembershipModel.`
+      );
   }
-}
+};
