@@ -1,4 +1,3 @@
-// users-service/src/handlers/deleteUserProfileHandler.js
 import { deleteUserProfileController } from "../controllers/deleteUserProfileController.js";
 import logger from "../utils/logger.js";
 

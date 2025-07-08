@@ -1,4 +1,3 @@
-// users-service/src/handlers/getUserProfileHandler.js
 import { getUserProfileController } from "../controllers/getUserProfileController.js";
 import logger from "../utils/logger.js";
 

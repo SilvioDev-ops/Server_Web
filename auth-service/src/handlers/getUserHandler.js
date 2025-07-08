@@ -1,4 +1,3 @@
-// auth-service/src/handlers/getUserHandler.js
 import { getUserController } from "../controllers/getUserController.js";
 import logger from "../utils/logger.js";
 

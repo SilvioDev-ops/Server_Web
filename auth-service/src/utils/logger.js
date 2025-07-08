@@ -46,11 +46,10 @@ const fileFormat = combine(
 );
 
 const logger = winston.createLogger({
-  levels: levels, // Usa los niveles personalizados
+  levels: levels,
   level: process.env.NODE_ENV === "production" ? "info" : "debug",
   format: winston.format.json(),
   transports: [
-    // Transporte para la consola
     new winston.transports.Console({
       format: consoleFormat,
       level: process.env.NODE_ENV === "production" ? "info" : "debug",

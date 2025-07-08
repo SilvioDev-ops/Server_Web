@@ -1,6 +1,5 @@
-// auth-service/src/controllers/verifyEmailController.js
 import { getUserModel } from "../getModel.js";
-import logger from "../utils/logger.js"; // <-- Importa el logger
+import logger from "../utils/logger.js";
 
 export const verifyEmailController = async (token) => {
   const User = getUserModel();

@@ -1,10 +1,8 @@
 import { body } from "express-validator";
 
 export const updatePasswordValidator = [
-  // Validate old password
   body("oldPassword").notEmpty().withMessage("Old password is required."),
 
-  // Validate new password
   body("newPassword")
     .isLength({ min: 8 })
     .withMessage("New password must be at least 8 characters long.")

@@ -1,6 +1,5 @@
-// users-service/src/controllers/getAllUsersProfileController.js
-import { getUserModel } from "../getModel.js"; // Asumiendo que getUserModel devuelve el modelo UserProfile
-import logger from "../utils/logger.js"; // Asegúrate de que ya tienes un logger en users-service
+import { getUserModel } from "../getModel.js";
+import logger from "../utils/logger.js";
 
 export const getAllUsersProfileController = async (
   filters = {},
@@ -12,7 +11,6 @@ export const getAllUsersProfileController = async (
 
   let query = {};
 
-  // --- Lógica de Filtrado ---
   if (filters.email) {
     query.email = { $regex: filters.email, $options: "i" };
   }
@@ -32,14 +30,9 @@ export const getAllUsersProfileController = async (
     query["address.city"] = { $regex: filters.city, $options: "i" };
   }
 
-  // --- Lógica para Soft Delete: Excluir perfiles eliminados por defecto ---
-  // Si filters.includeDeleted no es 'true', añadimos el filtro isDeleted: false
   if (filters.includeDeleted !== "true") {
-    // MODIFICACIÓN CLAVE AQUÍ: Incluye documentos donde isDeleted es false O donde isDeleted no existe
     query.$or = [{ isDeleted: false }, { isDeleted: { $exists: false } }];
   } else {
-    // Si includeDeleted es 'true', podemos querer ver solo los eliminados o todos
-    // Si filters.isDeleted está presente, lo aplicamos (ej. ?includeDeleted=true&isDeleted=true)
     if (filters.isDeleted !== undefined) {
       query.isDeleted =
         filters.isDeleted === "true" || filters.isDeleted === true;

@@ -1,20 +1,15 @@
-// membership-service/src/handlers/getMembershipPlansHandler.js
 import { getMembershipPlansController } from "../controllers/getMembershipPlansController.js";
-import logger from "../utils/logger.js"; // Ensure you have a logger in membership-service
+import logger from "../utils/logger.js";
 
 export const getMembershipPlansHandler = async (req, res) => {
   const ipAddress = req.ip;
-  const authenticatedUserId = req.user ? req.user._id : "N/A"; // User ID if authenticated
-
-  // Extract query parameters
+  const authenticatedUserId = req.user ? req.user._id : "N/A";
   const { page, limit, sort, ...filters } = req.query;
-
-  // Parse page and limit to integers, with default values
   const parsedPage = parseInt(page, 10) || 1;
   const parsedLimit = parseInt(limit, 10) || 10;
 
-  // Parse the 'sort' parameter. Expects a format like 'field:asc' or 'field:desc'
   let parsedSort = {};
+
   if (sort) {
     const [sortBy, sortOrder] = sort.split(":");
     if (sortBy && (sortOrder === "asc" || sortOrder === "desc")) {
@@ -27,8 +22,7 @@ export const getMembershipPlansHandler = async (req, res) => {
       });
     }
   } else {
-    // Default sorting if not specified
-    parsedSort = { price: 1 }; // Default to sorting by price ascending
+    parsedSort = { price: 1 };
   }
 
   try {

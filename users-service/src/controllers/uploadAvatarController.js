@@ -1,4 +1,3 @@
-// users-service/src/controllers/uploadAvatarController.js
 import cloudinary from "../config/cloudinaryConfig.js";
 import { getUserModel } from "../getModel.js";
 import logger from "../utils/logger.js";

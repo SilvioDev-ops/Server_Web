@@ -1,4 +1,3 @@
-// auth-service/src/handlers/putUserHandler.js
 import { validationResult } from "express-validator";
 import { putUserController } from "../controllers/putUserController.js";
 import { getUserModel } from "../getModel.js";

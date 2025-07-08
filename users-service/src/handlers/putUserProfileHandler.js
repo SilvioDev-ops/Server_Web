@@ -55,7 +55,6 @@ export const putUserProfileHandler = async (req, res) => {
         error.message.includes("Error updating authentication password") ||
         error.message.includes("Error updating authentication email")
       ) {
-        // Translated
         return res.status(400).json({ message: error.message });
       }
       res.status(500).json({

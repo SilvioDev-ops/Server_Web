@@ -2,10 +2,9 @@
 import { getUserModel } from "../getModel.js";
 import handlePassword from "../utils/handlePassword.js";
 import { tokenSign } from "../middlewares/handleJsonWebToken.js";
-import crypto from "crypto"; // Necesario para generar el refresh token
+import crypto from "crypto";
 import dotenv from "dotenv";
-import logger from "../utils/logger.js"; // <-- Importa el logger
-dotenv.config();
+import logger from "../utils/logger.js";
 
 export const localLoginController = async (email, password, ipAddress) => {
   const User = getUserModel();

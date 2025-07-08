@@ -1,4 +1,3 @@
-// auth-service/src/controllers/resetPasswordController.js
 import { getUserModel } from "../getModel.js";
 import handlePassword from "../utils/handlePassword.js";
 import logger from "../utils/logger.js";

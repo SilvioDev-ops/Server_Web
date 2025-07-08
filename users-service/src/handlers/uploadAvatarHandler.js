@@ -1,4 +1,3 @@
-// users-service/src/handlers/uploadAvatarHandler.js
 import multer from "multer";
 import { uploadAvatarController } from "../controllers/uploadAvatarController.js";
 import logger from "../utils/logger.js";

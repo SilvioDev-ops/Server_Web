@@ -1,4 +1,3 @@
-// membership-service/src/getModel.js
 import Membership from "./models/membershipModel.js";
 import MembershipPlan from "./models/membershipPlanModel.js";
 
