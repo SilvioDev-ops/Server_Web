@@ -4,18 +4,19 @@ const membershipSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "UserProfile",
+      ref: "User",
       required: true,
       index: true,
     },
     planId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "MembershipPlan",
-      required: true,
+      required: false,
     },
-
     membershipType: {
       type: String,
+      enum: ["Basic", "Premium", "VIP", "Enterprise"],
+      required: true,
     },
     price: {
       type: Number,
@@ -24,6 +25,7 @@ const membershipSchema = new mongoose.Schema(
     },
     currency: {
       type: String,
+      required: true,
       default: "USD",
     },
     durationValue: {
@@ -52,12 +54,19 @@ const membershipSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Active", "Inactive", "Cancelled", "Expired", "Trial", "Pending"],
+      enum: [
+        "Active",
+        "Inactive",
+        "Cancelled",
+        "Expired",
+        "Trial",
+        "Suspended",
+      ],
       default: "Active",
       index: true,
     },
     paymentTransactionId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "PaymentTransaction",
       required: false,
     },
@@ -66,6 +75,14 @@ const membershipSchema = new mongoose.Schema(
       required: false,
     },
     cancellationReason: {
+      type: String,
+      required: false,
+    },
+    suspensionDate: {
+      type: Date,
+      required: false,
+    },
+    suspensionReason: {
       type: String,
       required: false,
     },
@@ -97,5 +114,10 @@ membershipSchema.virtual("isExpired").get(function () {
   return this.endDate < now && this.status !== "Cancelled";
 });
 
+membershipSchema.virtual("isSuspended").get(function () {
+  return this.status === "Suspended";
+});
+
 const Membership = mongoose.model("Membership", membershipSchema);
+
 export default Membership;

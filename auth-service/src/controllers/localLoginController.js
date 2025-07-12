@@ -1,4 +1,3 @@
-// auth-service/src/controllers/localLoginController.js
 import { getUserModel } from "../getModel.js";
 import handlePassword from "../utils/handlePassword.js";
 import { tokenSign } from "../middlewares/handleJsonWebToken.js";

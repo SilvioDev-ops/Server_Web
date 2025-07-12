@@ -1,7 +1,8 @@
 import { getMembershipModel } from "../getModel.js";
 import logger from "../utils/logger.js";
 
-export const getAllMembershipController = async (
+export const getMembershipHistoryController = async (
+  userId,
   filters = {},
   page = 1,
   limit = 10,
@@ -9,11 +10,8 @@ export const getAllMembershipController = async (
 ) => {
   const Membership = getMembershipModel("Membership");
 
-  let query = {};
+  let query = { userId: userId };
 
-  if (filters.userId) {
-    query.userId = filters.userId;
-  }
   if (filters.status) {
     query.status = { $regex: filters.status, $options: "i" };
   }
@@ -38,20 +36,13 @@ export const getAllMembershipController = async (
   if (filters.endDateMax) {
     query.endDate = { ...query.endDate, $lte: new Date(filters.endDateMax) };
   }
-  if (filters.includeCancelledAndExpired !== "true") {
-    query.status = { $nin: ["Cancelled", "Expired"] };
-  } else {
-    if (filters.status) {
-      query.status = { $regex: filters.status, $options: "i" };
-    }
-  }
 
   const parsedPage = Math.max(1, parseInt(page, 10) || 1);
   const parsedLimit = Math.max(1, parseInt(limit, 10) || 10);
   const skip = (parsedPage - 1) * parsedLimit;
 
   logger.debug(
-    "CONTROLLER: Fetching all memberships with filters, pagination, and sorting",
+    `Fetching membership history for user ID: ${userId} with filters, pagination, and sorting`,
     { filters, page: parsedPage, limit: parsedLimit, sort }
   );
 
@@ -64,7 +55,8 @@ export const getAllMembershipController = async (
       .skip(skip)
       .limit(parsedLimit);
 
-    logger.info("CONTROLLER: Memberships fetched successfully", {
+    logger.info("User membership history fetched successfully", {
+      userId,
       filters,
       page: parsedPage,
       limit: parsedLimit,
@@ -83,9 +75,10 @@ export const getAllMembershipController = async (
       },
     };
   } catch (error) {
-    logger.error("CONTROLLER: Error in getAllMembershipController:", {
+    logger.error("Error in getMembershipHistoryController:", {
       message: error.message,
       stack: error.stack,
+      userId,
       filters,
       page: parsedPage,
       limit: parsedLimit,

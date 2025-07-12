@@ -1,4 +1,3 @@
-// auth-service/src/controllers/postUserController.js
 import axios from "axios";
 import { getUserModel } from "../getModel.js";
 import handlePassword from "../utils/handlePassword.js";
@@ -37,7 +36,7 @@ const rollbackUserCreation = async (userId) => {
   const User = getUserModel();
   try {
     await User.deleteOne({ _id: userId });
-    logger.warn("User deleted successfully due to rollback", { userId }); // <-- Uso del logger
+    logger.warn("User deleted successfully due to rollback", { userId });
   } catch (rollbackError) {
     logger.error("Rollback failed", {
       message: rollbackError.message,

@@ -14,19 +14,15 @@ export const getMembershipPlansController = async (
   if (filters.name) {
     query.name = { $regex: filters.name, $options: "i" };
   }
-
   if (filters.membershipType) {
     query.membershipType = { $regex: filters.membershipType, $options: "i" };
   }
-
   if (filters.priceMin !== undefined) {
     query.price = { ...query.price, $gte: parseFloat(filters.priceMin) };
   }
-
   if (filters.priceMax !== undefined) {
     query.price = { ...query.price, $lte: parseFloat(filters.priceMax) };
   }
-
   if (filters.isActive !== undefined) {
     query.isActive = filters.isActive === "true" || filters.isActive === true;
   }

@@ -6,6 +6,10 @@ import { putMembershipPlanHandler } from "../handlers/putMembershipPlanHandler.j
 import { deleteMembershipPlanHandler } from "../handlers/deleteMembershipPlanHandler.js";
 import { getUserMembershipsHandler } from "../handlers/getUserMembershipHandler.js";
 import { cancelMembershipHandler } from "../handlers/cancelMembershipHandler.js";
+import { getAllMembershipHandler } from "../handlers/getAllMembershipHandler.js";
+import { getMembershipHistoryHandler } from "../handlers/getMembershipHistoryHandler.js";
+import { renewMembershipHandler } from "../handlers/renewMembershipHandler.js";
+import { suspendMembershipHandler } from "../controllers/suspendMembershipHandler.js";
 import { authMiddleware } from "../middlewares/authenticateToken.js";
 import { checkRol } from "../utils/checkRol.js";
 
@@ -59,4 +63,31 @@ routerMembership.delete(
   cancelMembershipHandler
 );
 
+routerMembership.get(
+  "/all-memberships",
+  authMiddleware,
+  checkRol(["Admin"]),
+  getAllMembershipHandler
+);
+
+routerMembership.get(
+  "/membership-history",
+  authMiddleware,
+  checkRol(["Client", "Admin"]),
+  getMembershipHistoryHandler
+);
+
+routerMembership.post(
+  "/memberships/:membershipId/renew",
+  authMiddleware,
+  checkRol(["Client", "Admin"]),
+  renewMembershipHandler
+);
+
+routerMembership.put(
+  "/memberships/:membershipId/suspend",
+  authMiddleware,
+  checkRol(["Admin"]),
+  suspendMembershipHandler
+);
 export default routerMembership;
