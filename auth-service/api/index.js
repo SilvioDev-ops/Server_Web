@@ -1,17 +1,26 @@
+// api/index.js
 import app from "../app.js";
 import connectDB from "../src/config/database.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-const PORT = process.env.PORT || 5001;
+let isDbConnected = false;
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error("Error connecting to the database:", error);
-    process.exit(1);
-  });
+async function ensureDbConnection() {
+  if (!isDbConnected) {
+    try {
+      await connectDB();
+      isDbConnected = true;
+      console.log("Database connection established for serverless function.");
+    } catch (error) {
+      console.error(
+        "Failed to connect to database in serverless function:",
+        error
+      );
+    }
+  }
+}
+
+ensureDbConnection();
+
+export default app;
