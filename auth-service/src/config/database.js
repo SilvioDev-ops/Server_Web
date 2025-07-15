@@ -6,10 +6,7 @@ async function connectDB() {
   const mongoURI = process.env.MONGO_URI_AUTH;
 
   try {
-    const connection = await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const connection = await mongoose.connect(mongoURI);
     console.log(
       "MongoDB (Auth Service) conected to:",
       connection.connection.host,
