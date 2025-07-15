@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "Auth-Service/index.js",
+      "src": "auth-service/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "Auth-Service/index.js"
+      "dest": "auth-service/index.js"
     }
   ]
 }
