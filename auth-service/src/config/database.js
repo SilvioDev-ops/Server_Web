@@ -33,7 +33,9 @@ async function connectDB() {
   const mongoURI = process.env.MONGO_URI_AUTH;
 
   try {
-    const connection = await mongoose.connect(mongoURI);
+    const connection = await mongoose.connect(mongoURI, {
+      serverSelectionTimeoutMS: 30000,
+    });
     console.log(
       "MongoDB (Auth Service) connected to:",
       connection.connection.host,
