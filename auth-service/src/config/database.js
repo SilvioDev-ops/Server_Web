@@ -1,4 +1,4 @@
-//Conexion local
+// //Conexion local
 // import mongoose from "mongoose";
 // import dotenv from "dotenv";
 
@@ -28,10 +28,8 @@
 
 //Conexion para Vercel
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
 async function connectDB() {
-  dotenv.config();
   const mongoURI = process.env.MONGO_URI_AUTH;
 
   try {
