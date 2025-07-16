@@ -1,6 +1,6 @@
 import winston from "winston";
-import "winston-daily-rotate-file";
 import dotenv from "dotenv";
+import DailyRotateFile from "winston-daily-rotate-file";
 
 dotenv.config();
 
@@ -33,55 +33,30 @@ const consoleFormat = combine(
   printf((info) => `[${info.timestamp}] ${info.level}: ${info.message}`)
 );
 
-const fileFormat = combine(
-  timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-  printf((info) =>
-    JSON.stringify({
-      timestamp: info.timestamp,
-      level: info.level,
-      message: info.message,
-      ...info.metadata,
+const transports = [
+  new winston.transports.Console({
+    format: consoleFormat,
+    level: process.env.NODE_ENV === "production" ? "info" : "debug",
+  }),
+];
+
+if (process.env.NODE_ENV !== "production") {
+  transports.push(
+    new DailyRotateFile({
+      filename: "logs/application-%DATE%.log",
+      datePattern: "YYYY-MM-DD-HH",
+      zippedArchive: true,
+      maxSize: "20m",
+      maxFiles: "14d",
     })
-  )
-);
+  );
+}
 
 const logger = winston.createLogger({
   levels: levels,
   level: process.env.NODE_ENV === "production" ? "info" : "debug",
   format: winston.format.json(),
-  transports: [
-    new winston.transports.Console({
-      format: consoleFormat,
-      level: process.env.NODE_ENV === "production" ? "info" : "debug",
-    }),
-    new winston.transports.DailyRotateFile({
-      filename: "logs/error-%DATE%.log",
-      datePattern: "YYYY-MM-DD",
-      zippedArchive: true,
-      maxSize: "20m",
-      maxFiles: "14d",
-      level: "error",
-      format: fileFormat,
-    }),
-    new winston.transports.DailyRotateFile({
-      filename: "logs/combined-%DATE%.log",
-      datePattern: "YYYY-MM-DD",
-      zippedArchive: true,
-      maxSize: "20m",
-      maxFiles: "14d",
-      level: "info",
-      format: fileFormat,
-    }),
-    new winston.transports.DailyRotateFile({
-      filename: "logs/audit-%DATE%.log",
-      datePattern: "YYYY-MM-DD",
-      zippedArchive: true,
-      maxSize: "20m",
-      maxFiles: "30d",
-      level: "audit",
-      format: fileFormat,
-    }),
-  ],
+  transports: transports,
   exitOnError: false,
 });
 
