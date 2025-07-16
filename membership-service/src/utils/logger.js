@@ -1,6 +1,6 @@
 import winston from "winston";
 import dotenv from "dotenv";
-import DailyRotateFile from "winston-daily-rotate-file"; // Asegúrate de importar esto
+import DailyRotateFile from "winston-daily-rotate-file";
 
 dotenv.config();
 
@@ -55,8 +55,8 @@ if (process.env.NODE_ENV !== "production") {
 const logger = winston.createLogger({
   levels: levels,
   level: process.env.NODE_ENV === "production" ? "info" : "debug",
-  format: winston.format.json(), // Formato general para todos los transports
-  transports: transports, // Usa el array de transports condicional
+  format: winston.format.json(),
+  transports: transports,
   exitOnError: false,
 });
 
