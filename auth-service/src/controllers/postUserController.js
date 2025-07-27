@@ -127,12 +127,14 @@ const postUserController = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    const existingUserByPhone = await User.findOne({ phone });
-    if (existingUserByPhone) {
-      logger.warn("User registration attempt with existing phone number", {
-        phone,
-      });
-      return res.status(400).json({ message: "Phone number already exists" });
+    if (phone && phone.trim() !== "") {
+      const existingUserByPhone = await User.findOne({ phone });
+      if (existingUserByPhone) {
+        logger.warn("User registration attempt with existing phone number", {
+          phone,
+        });
+        return res.status(400).json({ message: "Phone number already exists" });
+      }
     }
 
     const hashedPassword = await handlePassword.encrypt(password);
@@ -146,7 +148,7 @@ const postUserController = async (req, res) => {
       password: hashedPassword,
       firstName,
       lastName,
-      phone,
+      ...(phone && phone.trim() !== "" && { phone: phone.trim() }),
       roles: [userRole],
       verificationToken: verificationToken,
       isVerified: false,
@@ -166,7 +168,7 @@ const postUserController = async (req, res) => {
       email: newUser.email,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
-      phone: phone,
+      ...(phone && phone.trim() !== "" && { phone: phone.trim() }),
     };
 
     try {

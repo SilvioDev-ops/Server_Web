@@ -1,4 +1,3 @@
-// membership-service/src/controllers/suspendMembershipController.js
 import { getMembershipModel } from "../getModel.js";
 import logger from "../utils/logger.js";
 

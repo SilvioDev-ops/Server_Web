@@ -1,7 +1,10 @@
 import { validationResult } from "express-validator";
 import { verifyEmailController } from "../controllers/verifyEmailController.js";
 import logger from "../utils/logger.js";
+
 export const verifyEmailHandler = async (req, res) => {
+  console.log("Token recibido en el backend:", req.query.token);
+
   const ipAddress = req.ip;
   const { token } = req.query;
 
@@ -18,11 +21,14 @@ export const verifyEmailHandler = async (req, res) => {
   try {
     const result = await verifyEmailController(token);
 
-    res.status(200).json(result);
     logger.info("Email verification request successfully handled", {
       token,
       ipAddress,
+      message: result.message,
     });
+    return res
+      .status(200)
+      .json({ message: result.message || "Email verificado exitosamente." });
   } catch (error) {
     logger.error("Error in verifyEmailHandler:", {
       message: error.message,
@@ -30,6 +36,7 @@ export const verifyEmailHandler = async (req, res) => {
       token,
       ipAddress,
     });
+
     if (
       error.message ===
       "Verification token is invalid or has already been used."
@@ -38,7 +45,7 @@ export const verifyEmailHandler = async (req, res) => {
     }
 
     if (!res.headersSent) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Internal server error during email verification.",
         error: error.message,
       });

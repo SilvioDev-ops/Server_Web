@@ -3,6 +3,7 @@ import postUserController from "../controllers/postUserController.js";
 import logger from "../utils/logger.js";
 
 export const postUserHandler = async (req, res) => {
+  console.log("Datos recibidos en el backend:", req.body);
   const ipAddress = req.ip;
   try {
     const errors = validationResult(req);

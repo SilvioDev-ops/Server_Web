@@ -27,6 +27,7 @@ const userProfileSchema = new mongoose.Schema(
     phone: {
       type: String,
       trim: true,
+      sparse: true,
       required: false,
     },
     address: {
