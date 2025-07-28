@@ -7,10 +7,8 @@ import dotenv from "dotenv";
 import logger from "../utils/logger.js";
 dotenv.config();
 
-const NOTIFICATION_SERVICE_URL =
-  process.env.NOTIFICATION_SERVICE_URL || "http://localhost:3003";
-const FRONTEND_VERIFY_EMAIL_URL =
-  process.env.FRONTEND_VERIFY_EMAIL_URL || "http://localhost:5173/verify-email";
+const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL;
+const FRONTEND_VERIFY_EMAIL_URL = process.env.FRONTEND_VERIFY_EMAIL_URL;
 const MAIL_ADMIN = process.env.MAIL_ADMIN;
 
 const createUserProfile = async (profileData) => {
