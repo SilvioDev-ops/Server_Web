@@ -6,11 +6,8 @@ import logger from "../utils/logger.js";
 
 dotenv.config();
 
-const NOTIFICATION_SERVICE_URL =
-  process.env.NOTIFICATION_SERVICE_URL || "http://localhost:3003";
-const FRONTEND_RESET_PASSWORD_URL =
-  process.env.FRONTEND_RESET_PASSWORD_URL ||
-  "http://localhost:5173/reset-password";
+const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL;
+const FRONTEND_RESET_PASSWORD_URL = process.env.FRONTEND_RESET_PASSWORD_URL;
 
 export const forgotPasswordController = async (email) => {
   const User = getUserModel();
