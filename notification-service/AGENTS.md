@@ -13,3 +13,4 @@ Servicio mínimo de notificaciones centrado en el envío de correos para recuper
 ## Guías para Claude Code
 - Mantén la lógica de integración con el proveedor de correo dentro de `src/handlers` o servicios auxiliares; las rutas deben permanecer delgadas.
 - Respeta la estructura de middleware existente (CORS, JSON parsing). Si añades más notificaciones, agrupa rutas relacionadas en `src/routes/notificationRouter.js` o nuevos routers.
+- Tests: prepara `src/tests/notification.test.js` con Jest + Supertest. Mockea el servicio de correo (p. ej. con `jest.mock`) para evitar envíos reales y valida que `POST /notification/forgot-password` responda 200 y maneje errores (400/500) según validación/handler.

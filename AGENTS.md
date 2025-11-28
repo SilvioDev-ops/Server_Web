@@ -15,3 +15,10 @@ Cada servicio se ejecuta de forma aislada desde su carpeta:
 - Desarrollo: `npm run dev` (usa `nodemon` + variables de entorno del propio servicio).
 - Producción local: `npm start`.
 - Pruebas: `npm test` actualmente muestra `"Error: no test specified"` porque ningún servicio tiene suites definidas aún.
+
+## Instrucciones para agentes (crear y ejecutar pruebas)
+- Usa Jest + Supertest para las pruebas de API HTTP; instala en cada servicio con `npm i -D jest supertest cross-env` y añade `"type": "module"` si vas a usar `import` en los tests.
+- Crea un script `"test": "cross-env NODE_ENV=test jest --runInBand"` en el `package.json` de cada servicio y configura Jest con `"testEnvironment": "node"`.
+- Prepara datos de entorno de prueba en `.env.test` (p. ej. `MONGODB_URI` fake) y carga con `cross-env` o `dotenv/config` en los tests.
+- Monta la app sin abrir el puerto en los tests (importa `app` desde `src/app.js` y usa `supertest(app)`); si el servicio conecta a Mongo, usa una URI de base de datos efímera o mocks de modelos.
+- Añade pruebas mínimas de smoke para cada router principal (ver secciones de rutas en los AGENTS específicos) y extiende con escenarios de autorización/validación.

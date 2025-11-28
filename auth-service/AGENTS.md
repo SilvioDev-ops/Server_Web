@@ -18,3 +18,4 @@ Servicio Node.js/Express para registro, login y administración de usuarios. Usa
 - Usa `authMiddleware` y `checkRol` para proteger endpoints y roles.
 - Los handlers viven en `src/handlers`; mantén la lógica de bases de datos en controladores/modelos en lugar de mezclarla en rutas.
 - Este servicio espera respuestas JSON y usa ES modules; evita `require`.
+- Tests: crea `src/tests/auth.test.js` usando Jest + Supertest; importa `app` desde `src/app.js` y maqueta la conexión a Mongo o usa una URI de prueba (`MONGODB_URI`). Cubre al menos registro/login, refresco de token y rutas protegidas (200/401/403) con `authMiddleware`.

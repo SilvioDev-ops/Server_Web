@@ -14,3 +14,4 @@ Servicio pensado para manejar cotizaciones/presupuestos, con dependencias de Exp
 - Antes de agregar rutas, crea la estructura estándar (`src/app.js`, `src/routes`, `src/controllers`/`handlers`) siguiendo el estilo de los otros servicios.
 - Define claramente el dominio (p. ej., creación de cotizaciones, cálculo de precios) y documenta los prefijos de rutas en `src/routes/indexRouter.js` cuando lo añadas.
 - Considera añadir `type: "module"` si vas a usar sintaxis ES module como en los demás servicios del proyecto.
+- Tests: tras crear la app, añade `src/tests/quotes.test.js` con Jest + Supertest. Cubre creación/listado de cotizaciones simuladas y validaciones de entrada; usa `supertest(app)` y mocks para dependencias externas (p. ej. `axios`).

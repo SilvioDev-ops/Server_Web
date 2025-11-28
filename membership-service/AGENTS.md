@@ -17,3 +17,4 @@ Microservicio Express para gestionar planes de membresía y suscripciones de usu
 - Coloca la lógica de negocio en controladores/handlers dentro de `src/handlers` y evita inflar las rutas.
 - Reutiliza utilidades de roles o fechas en `src/utils` antes de introducir dependencias nuevas.
 - ES modules únicamente (usa `import/export`).
+- Tests: configura Jest + Supertest y añade casos en `src/tests/memberships.test.js` que cubran altas/renovaciones/suspensiones y verificaciones de rol (Client/Admin). Usa `supertest(app)` importando desde `src/app.js` y prepara una base de datos de prueba o mocks de modelos.
