@@ -1,0 +1,11 @@
+# Contexto rápido del servicio de cotizaciones
+
+Servicio pensado para manejar cotizaciones/presupuestos, con dependencias de Express, MongoDB y axios, pero actualmente sin código fuente: solo existen `package.json` y archivos vacíos (`.txt`).
+
+## Situación actual
+- No hay `src/` ni punto de entrada implementado; los scripts en `package.json` referencian `server.js`, que aún no existe.
+
+## Guías para Claude Code
+- Antes de agregar rutas, crea la estructura estándar (`src/app.js`, `src/routes`, `src/controllers`/`handlers`) siguiendo el estilo de los otros servicios.
+- Define claramente el dominio (p. ej., creación de cotizaciones, cálculo de precios) y documenta los prefijos de rutas en `src/routes/indexRouter.js` cuando lo añadas.
+- Considera añadir `type: "module"` si vas a usar sintaxis ES module como en los demás servicios del proyecto.
