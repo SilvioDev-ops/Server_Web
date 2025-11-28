@@ -7,6 +7,11 @@ Servicio Express orientado a la gestión del perfil y recursos del usuario (dife
 - Administración: `GET /getAllUsersProfile` para admins y `DELETE /deleteUserProfile/:userId`.
 - Actualizaciones: `PUT /putUserProfile/:userId` y `POST /uploadAvatar/:userId` para subir avatar.
 
+## Comandos rápidos
+- Desarrollo: `npm run dev`.
+- Producción local: `npm start`.
+- Pruebas: `npm test` (actualmente solo imprime `"Error: no test specified"`).
+
 ## Guías para Claude Code
 - Mantén separada la validación de entrada en `src/validators` (p. ej. `postUserProfileValidator`, `uploadAvatarValidator`).
 - Protege rutas con `authMiddleware` y `checkRol` como ya se hace en los ejemplos existentes.

@@ -5,6 +5,11 @@ Servicio pensado para manejar cotizaciones/presupuestos, con dependencias de Exp
 ## Situación actual
 - No hay `src/` ni punto de entrada implementado; los scripts en `package.json` referencian `server.js`, que aún no existe.
 
+## Comandos rápidos
+- Desarrollo: `npm run dev` (fallará mientras no exista el punto de entrada `server.js`).
+- Producción local: `npm start` (mismo problema que arriba).
+- Pruebas: `npm test` solo imprime `"Error: no test specified"`.
+
 ## Guías para Claude Code
 - Antes de agregar rutas, crea la estructura estándar (`src/app.js`, `src/routes`, `src/controllers`/`handlers`) siguiendo el estilo de los otros servicios.
 - Define claramente el dominio (p. ej., creación de cotizaciones, cálculo de precios) y documenta los prefijos de rutas en `src/routes/indexRouter.js` cuando lo añadas.

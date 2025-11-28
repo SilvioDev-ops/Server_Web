@@ -7,6 +7,11 @@ Microservicio Express para gestionar planes de membresía y suscripciones de usu
 - Planes: `POST /membership-plans`, `GET /membership-plans`, `PUT /membership-plans/:planId`, `DELETE /membership-plans/:planId`.
 - Consultas: `GET /my-memberships` para el usuario, `GET /all-memberships` para admins y `GET /membership-history` para historial.
 
+## Comandos rápidos
+- Desarrollo: `npm run dev`.
+- Producción local: `npm start`.
+- Pruebas: `npm test` (actualmente muestra `"Error: no test specified"`).
+
 ## Guías para Claude Code
 - Mantén los validadores y middlewares de autorización (`authMiddleware` + `checkRol`) en cada ruta sensible.
 - Coloca la lógica de negocio en controladores/handlers dentro de `src/handlers` y evita inflar las rutas.

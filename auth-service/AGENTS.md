@@ -8,6 +8,11 @@ Servicio Node.js/Express para registro, login y administración de usuarios. Usa
 - Recuperación de acceso: `POST /forgot-password` y `POST /reset-password`.
 - Administración: `GET /getAllUsers`, `POST /updateUserStatus/:userId` y `GET /getUser/:userId` con `authMiddleware` + `checkRol`.
 
+## Comandos rápidos
+- Desarrollo: `npm run dev`.
+- Producción local: `npm start`.
+- Pruebas: `npm test` (actualmente solo imprime `"Error: no test specified"`).
+
 ## Guías para Claude Code
 - Revisa y extiende validaciones en `src/validators` cuando añadas o modifiques rutas.
 - Usa `authMiddleware` y `checkRol` para proteger endpoints y roles.
