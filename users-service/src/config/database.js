@@ -28,13 +28,9 @@
 import mongoose from "mongoose";
 
 async function connectDB() {
-<<<<<<< HEAD
   dotenv.config();
   const mongoURI = process.env.MONGO_URI_AUTH;
   console.log("Users Service intentando conectar a:", mongoURI);
-=======
-  const mongoURI = process.env.MONGO_URI_AUTH;
->>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
 
   try {
     const connection = await mongoose.connect(mongoURI, {
@@ -44,7 +40,7 @@ async function connectDB() {
       "MongoDB (Auth Service) connected to:",
       connection.connection.host,
       connection.connection.port,
-      connection.connection.name
+      connection.connection.name,
     );
     return connection.connection;
   } catch (error) {

@@ -47,7 +47,7 @@ const rollbackUserCreation = async (userId) => {
 
 const sendVerificationEmail = async (email, verificationToken) => {
   const verifyLink = `${FRONTEND_VERIFY_EMAIL_URL}?token=${verificationToken}&email=${encodeURIComponent(
-    email
+    email,
   )}`;
 
   const emailSubject = "Verifica tu cuenta";
@@ -115,7 +115,6 @@ const sendVerificationEmail = async (email, verificationToken) => {
 
 const postUserController = async (req, res) => {
   const User = getUserModel();
-<<<<<<< HEAD
   const defaultRole = "Client";
 
   const {
@@ -129,10 +128,6 @@ const postUserController = async (req, res) => {
     phoneNumber,
     telefono,
   } = req.body;
-=======
-  const { email, password, firstName, lastName, phone } = req.body;
-  const defaultRole = "Client";
->>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
 
   try {
     if (!email || !password) {
@@ -154,14 +149,9 @@ const postUserController = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-<<<<<<< HEAD
       return res.status(400).json({
         message: "User already exists",
       });
-=======
-      logger.warn("User registration attempt with existing email", { email });
-      return res.status(400).json({ message: "Email already exists" });
->>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
     }
 
     if (phone && phone.trim() !== "") {
@@ -183,34 +173,18 @@ const postUserController = async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
-<<<<<<< HEAD
       firstName: finalFirstName,
       lastName: finalLastName,
-=======
-      firstName,
-      lastName,
-      ...(phone && phone.trim() !== "" && { phone: phone.trim() }),
->>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
       roles: [userRole],
       verificationToken: verificationToken,
       isVerified: false,
     });
 
     await newUser.save();
-<<<<<<< HEAD
 
     const token = await tokenSign(newUser);
 
     const usersServiceApiUrl = process.env.USERS_SERVICE_API_URL;
-=======
-    logger.info("New user created in Auth Service DB", {
-      userId: newUser._id,
-      email: newUser.email,
-      roles: newUser.roles,
-    });
-
-    const token = await tokenSign(newUser);
->>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
 
     if (!usersServiceApiUrl) {
       await User.deleteOne({ _id: newUser._id });
@@ -225,7 +199,6 @@ const postUserController = async (req, res) => {
       email: newUser.email,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
-<<<<<<< HEAD
       phone: finalPhone,
     };
 
@@ -258,63 +231,6 @@ const postUserController = async (req, res) => {
       message: "Internal server error",
       error: error.message,
     });
-=======
-      ...(phone && phone.trim() !== "" && { phone: phone.trim() }),
-    };
-
-    try {
-      await createUserProfile(profileData);
-    } catch (profileError) {
-      logger.error(
-        "Error creating user profile in users-service, initiating rollback",
-        {
-          userId: newUser._id,
-          email: newUser.email,
-          error: profileError.message,
-          stack: profileError.stack,
-        }
-      );
-      await rollbackUserCreation(newUser._id);
-      return res.status(500).json({
-        message: "Error creating user profile. User creation rolled back.",
-        error: profileError.message,
-      });
-    }
-
-    try {
-      await sendVerificationEmail(newUser.email, verificationToken);
-    } catch (emailError) {
-      logger.error("Error sending verification email, but user created", {
-        userId: newUser._id,
-        email: newUser.email,
-        error: emailError.message,
-        stack: emailError.stack,
-      });
-    }
-
-    res.status(201).json({
-      message: "User registered successfully. Please verify your email.",
-      user: newUser,
-      token,
-    });
-    logger.audit("User registered successfully", {
-      userId: newUser._id,
-      email: newUser.email,
-      roles: newUser.roles,
-    });
-  } catch (error) {
-    logger.error("Error in postUserController", {
-      message: error.message,
-      stack: error.stack,
-      email: req.body.email,
-    });
-    if (!res.headersSent) {
-      res.status(500).json({
-        message: "Internal server error during user registration.",
-        error: error.message,
-      });
-    }
->>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
   }
 };
 
