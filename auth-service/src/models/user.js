@@ -1,6 +1,6 @@
-import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -35,6 +35,7 @@ const userSchema = new Schema(
     },
     verificationToken: {
       type: String,
+      default: null,
     },
     isVerified: {
       type: Boolean,
@@ -42,15 +43,31 @@ const userSchema = new Schema(
     },
     passwordResetToken: {
       type: String,
+      default: null,
     },
     passwordResetExpires: {
       type: Date,
+      default: null,
     },
     lastLogin: {
       type: Date,
+      default: null,
+    },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
+    refreshTokenExpiresAt: {
+      type: Date,
+      default: null,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }
 );
 
-export default userSchema;
+const User = mongoose.model("User", userSchema);
+export default User;

@@ -1,4 +1,4 @@
-import app from "./app.js";
+import app from "./src/app.js";
 import connectDB from "./src/config/database.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -15,3 +15,20 @@ connectDB()
     console.error("Error connecting to the database:", error);
     process.exit(1);
   });
+
+//Production
+// import app from "./src/app.js";
+// import connectDB from "./src/config/database.js";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+// connectDB()
+//   .then(() => {
+//     console.log("Database connected successfully.");
+//   })
+//   .catch((error) => {
+//     console.error("Error connecting to the database:", error);
+//   });
+
+// export default app;

@@ -1,12 +1,10 @@
-import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
 import { getUserModel } from "../getModel.js";
-const UserProfile = getUserModel();
-const AUTH_SERVICE_API_URL_PUT_USER = process.env.AUTH_SERVICE_API_URL_PUT_USER;
+import logger from "../utils/logger.js";
 
 export const putUserProfileController = async (userId, userData) => {
-  console.log(userData);
+  const UserProfile = getUserModel();
+
+  logger.debug("Attempting to update user profile", { userId, userData });
 
   try {
     const updatedProfile = await UserProfile.findByIdAndUpdate(
@@ -16,32 +14,25 @@ export const putUserProfileController = async (userId, userData) => {
     );
 
     if (!updatedProfile) {
-      throw new Error("Perfil de usuario no encontrado");
+      logger.warn("User profile not found for update", { userId, userData });
+      throw new Error("Perfil de usuario no encontrado.");
     }
 
-    if (userData.email || userData.password) {
-      const authServiceApiUrl = `${AUTH_SERVICE_API_URL_PUT_USER}/${userData.userId}`;
-      try {
-        const authResponse = await axios.put(authServiceApiUrl, {
-          email: userData.email,
-          password: userData.password,
-        });
-        console.log("Respuesta de auth-service:", authResponse.data);
-      } catch (authError) {
-        console.error(
-          "Error al actualizar usuario en auth-service:",
-          authError.message
-        );
-        throw new Error(
-          "Error al actualizar usuario de autenticación: " + authError.message
-        );
-      }
-    }
+    logger.audit("User profile updated successfully", {
+      userId: updatedProfile._id,
+      email: updatedProfile.email,
+      updatedFields: Object.keys(userData),
+    });
+    logger.info("User profile saved to database after update", {
+      userId: updatedProfile._id,
+      email: updatedProfile.email,
+    });
+
     return updatedProfile;
   } catch (error) {
-    console.error(
+    logger.error(
       "Error al actualizar el perfil de usuario en el controlador:",
-      error
+      { message: error.message, stack: error.stack, userId, userData }
     );
     throw error;
   }

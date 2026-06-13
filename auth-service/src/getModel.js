@@ -1,11 +1,5 @@
-import mongoose from "mongoose";
-import userSchema from "./models/user.js";
-
-let UserModel;
+import User from "./models/user.js";
 
 export const getUserModel = () => {
-  if (!UserModel) {
-    UserModel = mongoose.model("User", userSchema);
-  }
-  return UserModel;
+  return User;
 };
