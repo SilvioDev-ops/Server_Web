@@ -1,4 +1,6 @@
 {
+<<<<<<< HEAD
+=======
   "dependencies": {
     "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
@@ -17,17 +19,37 @@
   "devDependencies": {
     "cross-env": "^7.0.3"
   },
+>>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
   "name": "membership-service",
   "version": "1.0.0",
+  "description": "",
+  "type": "module",
   "main": "index.js",
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+=======
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "start": "cross-env NODE_ENV=production node index.js",
+>>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "axios": "^1.9.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.10"
+  }
 }

@@ -1,4 +1,17 @@
 import { getAllMembershipController } from "../controllers/getAllMembershipController.js";
+<<<<<<< HEAD
+
+export const getAllMembershipHandler = async (req, res) => {
+  try {
+    const memberships = await getAllMembershipController(req, res);
+    if (!memberships) {
+      return res.status(404).json({ message: "No memberships found" });
+    }
+    res.status(200).json(memberships);
+  } catch (error) {
+    console.error("Error in getAllMembershipHandler:", error);
+    res.status(500).json({ message: "Internal server error" });
+=======
 import logger from "../utils/logger.js";
 export const getAllMembershipHandler = async (req, res) => {
   const ipAddress = req.ip;
@@ -78,5 +91,6 @@ export const getAllMembershipHandler = async (req, res) => {
         error: error.message,
       });
     }
+>>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319
   }
 };

@@ -1,0 +1,7 @@
+http://localhost:3002/memberships
+
+POST http://localhost:3002/memberships/memberships
+
+GET http://localhost:3002/memberships/memberships
+
+POST http://localhost:3002/memberships/membership-plans

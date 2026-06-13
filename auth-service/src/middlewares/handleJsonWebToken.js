@@ -13,8 +13,8 @@ export const tokenSign = async (user) => {
     },
     JWT_SECRET,
     {
-      expiresIn: "3h",
-    }
+      expiresIn: "1h",
+    },
   );
   return sign;
 };

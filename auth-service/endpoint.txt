@@ -1,0 +1,13 @@
+http://localhost:3000/user
+
+POST http://localhost:3000/user/register
+
+POST http://localhost:3000/user/login
+
+PUT http://localhost:3000/user/updateUser/:userId
+
+GET http://localhost:3000/user/getUser/:userId
+
+POST http://localhost:3000/user/forgot-password
+
+GET http://localhost:3000/user/verify-email?token=

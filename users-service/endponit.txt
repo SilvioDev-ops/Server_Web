@@ -1,0 +1,11 @@
+http://localhost:3001/userProfile
+
+POST http://localhost:3001/userProfile/postUserProfile
+
+GET http://localhost:3001/userProfile/getUserProfile/:userId
+
+GET http://localhost:3001/userProfile/getAllUsersProfile
+
+DELETE http://localhost:3001/userProfile/deleteUserProfile/:userId
+
+PUT http://localhost:3001/userProfile/putUserProfile/:userId

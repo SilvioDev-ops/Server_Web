@@ -1,3 +1,17 @@
+<<<<<<< HEAD
+import { getMembershipModel } from "../getModel.js"; 
+
+export const getAllMembershipController = async (req, res) => { 
+   
+        const Membership = getMembershipModel(); 
+        const memberships = await Membership.find(); 
+         
+        if (!memberships) {
+            return res.status(404).json({ message: "No memberships found" }); 
+        }
+        return memberships
+    }
+=======
 import { getMembershipModel } from "../getModel.js";
 import logger from "../utils/logger.js";
 
@@ -94,3 +108,4 @@ export const getAllMembershipController = async (
     throw error;
   }
 };
+>>>>>>> cc7160a3ee5a811f12a3053acc295e6257a26319

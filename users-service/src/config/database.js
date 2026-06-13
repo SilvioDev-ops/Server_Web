@@ -26,23 +26,32 @@
 
 //Conexion para Vercel
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 async function connectDB() {
+  dotenv.config();
+
   const mongoURI = process.env.MONGO_URI_AUTH;
+
+  if (!mongoURI) {
+    throw new Error("Falta configurar MONGO_URI_AUTH");
+  }
 
   try {
     const connection = await mongoose.connect(mongoURI, {
       serverSelectionTimeoutMS: 30000,
     });
+
     console.log(
-      "MongoDB (Auth Service) connected to:",
+      "MongoDB (Users Service) conectado a:",
       connection.connection.host,
       connection.connection.port,
-      connection.connection.name
+      connection.connection.name,
     );
+
     return connection.connection;
   } catch (error) {
-    console.error("MongoDB connection error (Auth Service):", error);
+    console.error("Error de conexión a MongoDB (Users Service):", error);
     throw error;
   }
 }

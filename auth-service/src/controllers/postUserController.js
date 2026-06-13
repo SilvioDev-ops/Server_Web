@@ -47,7 +47,7 @@ const rollbackUserCreation = async (userId) => {
 
 const sendVerificationEmail = async (email, verificationToken) => {
   const verifyLink = `${FRONTEND_VERIFY_EMAIL_URL}?token=${verificationToken}&email=${encodeURIComponent(
-    email
+    email,
   )}`;
 
   const emailSubject = "Verifica tu cuenta";
@@ -115,14 +115,43 @@ const sendVerificationEmail = async (email, verificationToken) => {
 
 const postUserController = async (req, res) => {
   const User = getUserModel();
-  const { email, password, firstName, lastName, phone } = req.body;
   const defaultRole = "Client";
 
+  const {
+    email,
+    password,
+    firstName,
+    lastName,
+    nombre,
+    apellido,
+    phone,
+    phoneNumber,
+    telefono,
+  } = req.body;
+
   try {
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
+
+    const finalFirstName = firstName || nombre;
+    const finalLastName = lastName || apellido;
+    const finalPhone = phone || phoneNumber || telefono;
+
+    if (!finalFirstName || !finalLastName) {
+      return res.status(400).json({
+        message: "First name and last name are required",
+      });
+    }
+
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
-      logger.warn("User registration attempt with existing email", { email });
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({
+        message: "User already exists",
+      });
     }
 
     if (phone && phone.trim() !== "") {
@@ -144,83 +173,64 @@ const postUserController = async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
-      firstName,
-      lastName,
-      ...(phone && phone.trim() !== "" && { phone: phone.trim() }),
+      firstName: finalFirstName,
+      lastName: finalLastName,
       roles: [userRole],
       verificationToken: verificationToken,
       isVerified: false,
     });
 
     await newUser.save();
-    logger.info("New user created in Auth Service DB", {
-      userId: newUser._id,
-      email: newUser.email,
-      roles: newUser.roles,
-    });
 
     const token = await tokenSign(newUser);
 
+    const usersServiceApiUrl = process.env.USERS_SERVICE_API_URL;
+
+    if (!usersServiceApiUrl) {
+      await User.deleteOne({ _id: newUser._id });
+
+      return res.status(500).json({
+        message: "USERS_SERVICE_API_URL is not defined",
+      });
+    }
+
     const profileData = {
-      userId: newUser._id,
+      userId: newUser._id.toString(),
       email: newUser.email,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
-      ...(phone && phone.trim() !== "" && { phone: phone.trim() }),
+      phone: finalPhone,
     };
 
     try {
-      await createUserProfile(profileData);
-    } catch (profileError) {
-      logger.error(
-        "Error creating user profile in users-service, initiating rollback",
-        {
-          userId: newUser._id,
-          email: newUser.email,
-          error: profileError.message,
-          stack: profileError.stack,
-        }
-      );
-      await rollbackUserCreation(newUser._id);
+      const response = await axios.post(usersServiceApiUrl, profileData);
+
+      console.log("User profile created in users-service:", response.data);
+
+      return res.status(201).json({
+        user: newUser,
+        token,
+      });
+    } catch (error) {
+      console.error("Error calling users-service API:");
+      console.error("Status:", error.response?.status);
+      console.error("Data:", error.response?.data);
+      console.error("Message:", error.message);
+
+      await User.deleteOne({ _id: newUser._id });
+
       return res.status(500).json({
         message: "Error creating user profile. User creation rolled back.",
-        error: profileError.message,
+        error: error.response?.data || error.message,
       });
     }
-
-    try {
-      await sendVerificationEmail(newUser.email, verificationToken);
-    } catch (emailError) {
-      logger.error("Error sending verification email, but user created", {
-        userId: newUser._id,
-        email: newUser.email,
-        error: emailError.message,
-        stack: emailError.stack,
-      });
-    }
-
-    res.status(201).json({
-      message: "User registered successfully. Please verify your email.",
-      user: newUser,
-      token,
-    });
-    logger.audit("User registered successfully", {
-      userId: newUser._id,
-      email: newUser.email,
-      roles: newUser.roles,
-    });
   } catch (error) {
-    logger.error("Error in postUserController", {
-      message: error.message,
-      stack: error.stack,
-      email: req.body.email,
+    console.error("Error creating user:", error);
+
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
     });
-    if (!res.headersSent) {
-      res.status(500).json({
-        message: "Internal server error during user registration.",
-        error: error.message,
-      });
-    }
   }
 };
 
