@@ -1,0 +1,27 @@
+# Archivos locales de Silvi
+*Silvi*
+*-Silvi*
+**/*Silvi*
+**/*-Silvi*
+
+# AGENTS locales
+AGENTS.md
+**/AGENTS.md
+
+# Prompts / resúmenes / pruebas locales
+PROMPT_PARA_CLAUDE.md
+RESUMEN_PRUEBAS.md
+TESTS_PENDIENTES.md
+resumen.txt
+
+# Environments locales
+.env
+.env.*
+!*.env.example
+
+# Logs
+logs/
+**/logs/
+
+# Node
+node_modules/

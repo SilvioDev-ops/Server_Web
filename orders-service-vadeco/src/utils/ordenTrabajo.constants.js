@@ -1,0 +1,11 @@
+export const ESTADOS_ORDEN = [
+  "PENDIENTE",
+  "ASIGNADA",
+  "EN_PROCESO",
+  "REALIZADA",
+  "DEVUELTA",
+  "FUGA",
+  "DESESTIMADA",
+];
+
+export const PRIORIDADES_ORDEN = ["BAJA", "MEDIA", "ALTA", "URGENTE"];
