@@ -5,72 +5,48 @@ import { tokenSign } from "../middlewares/handleJsonWebToken.js";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import logger from "../utils/logger.js";
+
 dotenv.config();
 
 const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL;
 const FRONTEND_VERIFY_EMAIL_URL = process.env.FRONTEND_VERIFY_EMAIL_URL;
 const MAIL_ADMIN = process.env.MAIL_ADMIN;
 
-const createUserProfile = async (profileData) => {
-  try {
-    const usersServiceApiUrl = process.env.USERS_SERVICE_API_URL;
-    const response = await axios.post(usersServiceApiUrl, profileData);
-    logger.info("User profile created in users-service", {
-      userId: profileData.userId,
-      email: profileData.email,
-    });
-    return response.data;
-  } catch (error) {
-    logger.error("Error calling users-service API", {
-      message: error.message,
-      stack: error.stack,
-      profileData,
-    });
-    throw error;
-  }
-};
-
-const rollbackUserCreation = async (userId) => {
-  const User = getUserModel();
-  try {
-    await User.deleteOne({ _id: userId });
-    logger.warn("User deleted successfully due to rollback", { userId });
-  } catch (rollbackError) {
-    logger.error("Rollback failed", {
-      message: rollbackError.message,
-      stack: rollbackError.stack,
-      userId,
-    });
-    throw rollbackError;
-  }
-};
-
 const sendVerificationEmail = async (email, verificationToken) => {
+  if (!NOTIFICATION_SERVICE_URL) {
+    throw new Error("NOTIFICATION_SERVICE_URL is not defined");
+  }
+
+  if (!FRONTEND_VERIFY_EMAIL_URL) {
+    throw new Error("FRONTEND_VERIFY_EMAIL_URL is not defined");
+  }
+
   const verifyLink = `${FRONTEND_VERIFY_EMAIL_URL}?token=${verificationToken}&email=${encodeURIComponent(
     email,
   )}`;
 
   const emailSubject = "Verifica tu cuenta";
+
   const emailHtml = `
     <!DOCTYPE html>
     <html>
     <head>
-    <style>
-      body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-      .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-      .header { background-color: #f8f8f8; padding: 10px 0; text-align: center; border-bottom: 1px solid #eee; }
-      .content { padding: 20px; }
-      .button {
-        display: inline-block;
-        padding: 10px 20px;
-        margin: 15px 0;
-        background-color: #28a745; /* Un verde para verificar */
-        color: #ffffff !important;
-        text-decoration: none;
-        border-radius: 5px;
-      }
-      .footer { text-align: center; font-size: 0.9em; color: #777; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
-    </style>
+      <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+        .header { background-color: #f8f8f8; padding: 10px 0; text-align: center; border-bottom: 1px solid #eee; }
+        .content { padding: 20px; }
+        .button {
+          display: inline-block;
+          padding: 10px 20px;
+          margin: 15px 0;
+          background-color: #28a745;
+          color: #ffffff !important;
+          text-decoration: none;
+          border-radius: 5px;
+        }
+        .footer { text-align: center; font-size: 0.9em; color: #777; margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
+      </style>
     </head>
     <body>
       <div class="container">
@@ -79,14 +55,14 @@ const sendVerificationEmail = async (email, verificationToken) => {
         </div>
         <div class="content">
           <p>¡Hola!</p>
-          <p>Gracias por registrarte. Por favor, haz clic en el siguiente botón para verificar tu dirección de correo electrónico:</p>
+          <p>Gracias por registrarte. Por favor, hacé clic en el siguiente botón para verificar tu dirección de correo electrónico:</p>
           <p style="text-align: center;">
             <a href="${verifyLink}" class="button">Verificar mi Email</a>
           </p>
-          <p>Si no te registraste en nuestra aplicación, por favor, ignora este correo.</p>
+          <p>Si no te registraste en nuestra aplicación, ignorá este correo.</p>
           <br>
           <p>Saludos,</p>
-          <p>El equipo de [Nombre de tu Aplicación]</p>
+          <p>El equipo de tu aplicación</p>
         </div>
         <div class="footer">
           <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
@@ -96,21 +72,24 @@ const sendVerificationEmail = async (email, verificationToken) => {
     </html>
   `;
 
-  try {
-    await axios.post(`${NOTIFICATION_SERVICE_URL}`, {
-      to: email,
-      subject: emailSubject,
-      html: emailHtml,
-    });
-    logger.info(`Verification email sent to: ${email}`);
-  } catch (error) {
-    logger.error("Error sending verification email", {
-      message: error.message,
-      stack: error.stack,
-      email,
-    });
-    throw new Error("Failed to send verification email.");
-  }
+  console.log(
+    "Enviando email a notification-service:",
+    NOTIFICATION_SERVICE_URL,
+  );
+  console.log("Email destino:", email);
+
+  const response = await axios.post(NOTIFICATION_SERVICE_URL, {
+    to: email,
+    subject: emailSubject,
+    html: emailHtml,
+  });
+
+  logger.info("Verification email sent", {
+    email,
+    notificationResponse: response.data,
+  });
+
+  return response.data;
 };
 
 const postUserController = async (req, res) => {
@@ -136,6 +115,8 @@ const postUserController = async (req, res) => {
       });
     }
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     const finalFirstName = firstName || nombre;
     const finalLastName = lastName || apellido;
     const finalPhone = phone || phoneNumber || telefono;
@@ -146,7 +127,7 @@ const postUserController = async (req, res) => {
       });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
       return res.status(400).json({
@@ -154,65 +135,72 @@ const postUserController = async (req, res) => {
       });
     }
 
-    if (phone && phone.trim() !== "") {
-      const existingUserByPhone = await User.findOne({ phone });
+    if (finalPhone && finalPhone.trim() !== "") {
+      const existingUserByPhone = await User.findOne({ phone: finalPhone });
+
       if (existingUserByPhone) {
         logger.warn("User registration attempt with existing phone number", {
-          phone,
+          phone: finalPhone,
         });
-        return res.status(400).json({ message: "Phone number already exists" });
+
+        return res.status(400).json({
+          message: "Phone number already exists",
+        });
       }
     }
-
-    const hashedPassword = await handlePassword.encrypt(password);
-
-    const verificationToken = crypto.randomBytes(32).toString("hex");
-
-    const userRole = email === MAIL_ADMIN ? "Admin" : defaultRole;
-
-    const newUser = new User({
-      email,
-      password: hashedPassword,
-      firstName: finalFirstName,
-      lastName: finalLastName,
-      roles: [userRole],
-      verificationToken: verificationToken,
-      isVerified: false,
-    });
-
-    await newUser.save();
-
-    const token = await tokenSign(newUser);
 
     const usersServiceApiUrl = process.env.USERS_SERVICE_API_URL;
 
     if (!usersServiceApiUrl) {
-      await User.deleteOne({ _id: newUser._id });
-
       return res.status(500).json({
         message: "USERS_SERVICE_API_URL is not defined",
       });
     }
 
-    const profileData = {
-      userId: newUser._id.toString(),
-      email: newUser.email,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
+    const hashedPassword = await handlePassword.encrypt(password);
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const userRole = normalizedEmail === MAIL_ADMIN ? "Admin" : defaultRole;
+
+    const newUser = new User({
+      email: normalizedEmail,
+      password: hashedPassword,
+      firstName: finalFirstName,
+      lastName: finalLastName,
       phone: finalPhone,
-    };
+      roles: [userRole],
+      verificationToken,
+      isVerified: false,
+    });
+
+    await newUser.save();
 
     try {
-      const response = await axios.post(usersServiceApiUrl, profileData);
+      const profileData = {
+        userId: newUser._id.toString(),
+        email: newUser.email,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        phone: finalPhone,
+      };
 
-      console.log("User profile created in users-service:", response.data);
+      const profileResponse = await axios.post(usersServiceApiUrl, profileData);
+
+      console.log(
+        "User profile created in users-service:",
+        profileResponse.data,
+      );
+
+      await sendVerificationEmail(newUser.email, verificationToken);
+
+      const token = await tokenSign(newUser);
 
       return res.status(201).json({
+        message: "User created successfully. Verification email sent.",
         user: newUser,
         token,
       });
     } catch (error) {
-      console.error("Error calling users-service API:");
+      console.error("Error after creating auth user:");
       console.error("Status:", error.response?.status);
       console.error("Data:", error.response?.data);
       console.error("Message:", error.message);
@@ -220,7 +208,8 @@ const postUserController = async (req, res) => {
       await User.deleteOne({ _id: newUser._id });
 
       return res.status(500).json({
-        message: "Error creating user profile. User creation rolled back.",
+        message:
+          "Error creating user or sending verification email. User creation rolled back.",
         error: error.response?.data || error.message,
       });
     }

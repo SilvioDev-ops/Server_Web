@@ -14,24 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  res.json({
-    service: "orders-service",
-    status: "ok",
-    message: "Servicio de órdenes de trabajo funcionando",
-  });
-});
-
-app.get("/health", (req, res) => {
-  res.json({
-    status: "ok",
-    service: "orders-service",
-    timestamp: new Date().toISOString(),
-  });
-});
-
 app.use("/api/ordenes", ordenTrabajoRoutes);
-app.use("/ordenes", ordenTrabajoRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
