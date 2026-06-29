@@ -6,6 +6,7 @@ export const ESTADOS_ORDEN = [
   "DEVUELTA",
   "FUGA",
   "DESESTIMADA",
+  "PUNTEO",
 ];
 
 export const PRIORIDADES_ORDEN = ["BAJA", "MEDIA", "ALTA", "URGENTE"];
