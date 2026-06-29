@@ -6,7 +6,7 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export const tokenSign = async (user) => {
-  const sign = _sign(
+  const token = _sign(
     {
       id: user.id,
       type: user.type,
@@ -16,7 +16,10 @@ export const tokenSign = async (user) => {
       expiresIn: "1h",
     },
   );
-  return sign;
+
+  console.log("TOKEN GENERADO");
+
+  return token;
 };
 
 export const verifyToken = async (tokenJwt) => {

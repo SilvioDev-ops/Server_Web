@@ -25,7 +25,6 @@
 // export default connectDB;
 
 //Conexion para Vercel
-//Conexion para Vercel
 import mongoose from "mongoose";
 
 async function connectDB() {

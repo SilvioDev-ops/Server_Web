@@ -12,7 +12,7 @@
 //       "MongoDB (Auth Service) conected to:",
 //       connection.connection.host,
 //       connection.connection.port,
-//       connection.connection.name
+//       connection.connection.name,
 //     );
 //     return connection.connection;
 //   } catch (error) {
