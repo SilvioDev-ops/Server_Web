@@ -1,3 +1,17 @@
+// import dotenv from "dotenv";
+// import app from "./src/app.js";
+// import connectDB from "./src/config/db.js";
+
+// dotenv.config();
+
+// const PORT = process.env.PORT || 3002;
+
+// await connectDB();
+
+// app.listen(PORT, () => {
+//   console.log(`Orders Service corriendo en http://localhost:${PORT}`);
+// });
+
 import dotenv from "dotenv";
 import app from "./src/app.js";
 import connectDB from "./src/config/db.js";

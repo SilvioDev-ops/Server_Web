@@ -12,6 +12,23 @@ const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL;
 const FRONTEND_VERIFY_EMAIL_URL = process.env.FRONTEND_VERIFY_EMAIL_URL;
 const MAIL_ADMIN = process.env.MAIL_ADMIN;
 
+const requiredEmails = [
+  process.env.MAIL_ENRIQUE,
+  process.env.MAIL_SANCHEZ,
+  process.env.MAIL_MEDINA,
+  process.env.MAIL_SILVIO,
+];
+
+if (requiredEmails.some((email) => !email)) {
+  throw new Error(
+    "MAIL_ENRIQUE, MAIL_SANCHEZ, MAIL_MEDINA and MAIL_SILVIO must be defined in the environment variables.",
+  );
+}
+
+const ALLOWED_EMAILS = requiredEmails.map((email) =>
+  email.trim().toLowerCase(),
+);
+
 const sendVerificationEmail = async (email, verificationToken) => {
   if (!NOTIFICATION_SERVICE_URL) {
     throw new Error("NOTIFICATION_SERVICE_URL is not defined");
@@ -116,6 +133,12 @@ const postUserController = async (req, res) => {
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+
+    if (!ALLOWED_EMAILS.includes(normalizedEmail)) {
+      return res.status(403).json({
+        message: "This email is not authorized to register.",
+      });
+    }
 
     const finalFirstName = firstName || nombre;
     const finalLastName = lastName || apellido;
