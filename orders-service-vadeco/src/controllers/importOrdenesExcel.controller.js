@@ -48,7 +48,15 @@ const buildResponse = ({
   });
 };
 
-const importExcelBySheets = async ({ req, res, next, targetSheets, importSource, message }) => {
+const importExcelBySheets = async ({
+  req,
+  res,
+  next,
+  targetSheets,
+  importSource,
+  message,
+  estado,
+}) => {
   try {
     if (!req.file) {
       return res.status(400).json({
@@ -56,8 +64,12 @@ const importExcelBySheets = async ({ req, res, next, targetSheets, importSource,
       });
     }
 
-    const { ordenes, resumenHojas, hojasBuscadas, hojasEncontradas } =
-      parseOrdenesFromWorkbookBuffer(req.file.buffer, targetSheets, importSource);
+    let { ordenes, resumenHojas, hojasBuscadas, hojasEncontradas } =
+      parseOrdenesFromWorkbookBuffer(
+        req.file.buffer,
+        targetSheets,
+        importSource,
+      );
 
     if (!hojasEncontradas.length) {
       return res.status(400).json({
@@ -72,6 +84,12 @@ const importExcelBySheets = async ({ req, res, next, targetSheets, importSource,
         resumenHojas,
       });
     }
+
+    // ✅ Asignar estado según el tipo de importación
+    ordenes = ordenes.map((orden) => ({
+      ...orden,
+      estado,
+    }));
 
     const result = await bulkUpsertOrdenes(ordenes);
 
@@ -98,6 +116,7 @@ export const importOrdenesExcel = async (req, res, next) => {
     targetSheets: DEFAULT_IMPORT_SHEETS,
     importSource: "carga general",
     message: "Importación de Excel finalizada",
+    estado: "PENDIENTE",
   });
 };
 
@@ -109,5 +128,6 @@ export const importPunteoExcel = async (req, res, next) => {
     targetSheets: PUNTEO_IMPORT_SHEETS,
     importSource: "carga punteo",
     message: "Importación de punteo finalizada",
+    estado: "PUNTEO",
   });
 };

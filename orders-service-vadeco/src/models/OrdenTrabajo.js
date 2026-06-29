@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
-import { ESTADOS_ORDEN, PRIORIDADES_ORDEN } from "../utils/ordenTrabajo.constants.js";
+import {
+  ESTADOS_ORDEN,
+  PRIORIDADES_ORDEN,
+} from "../utils/ordenTrabajo.constants.js";
 
 const parteTrabajoSchema = new mongoose.Schema(
   {
