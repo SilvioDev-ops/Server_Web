@@ -1,6 +1,5 @@
 import OrdenTrabajo from "../models/OrdenTrabajo.js";
 import Cuadrilla from "../models/Cuadrilla.js";
-
 const buildFilters = (query) => {
   const { estado, cuadrilla, localidad, empresa, fecha, desde, hasta, search } =
     query;
