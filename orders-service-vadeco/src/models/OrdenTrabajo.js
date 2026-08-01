@@ -10,53 +10,59 @@ const parteTrabajoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
     empresas: {
       type: String,
       trim: true,
       default: "",
     },
+
     mamposteria: {
       type: Number,
       default: 0,
     },
+
     pinche: {
       type: Number,
       default: 0,
     },
+
     gliper: {
       type: Number,
       default: 0,
     },
+
     fallidos: {
       type: Number,
       default: 0,
     },
+
     cajas: {
       type: Number,
       default: 0,
     },
+
     limpieza: {
       type: Number,
       default: 0,
     },
+
     metros: {
       type: Number,
       default: 0,
     },
-    cuadrilla: {
-      type: String,
-      trim: true,
-      default: "",
-    },
+
     fecha: {
       type: Date,
     },
+
     integrantes: [
       {
         type: String,
         trim: true,
       },
     ],
+
     patentes: [
       {
         type: String,
@@ -64,7 +70,13 @@ const parteTrabajoSchema = new mongoose.Schema(
         uppercase: true,
       },
     ],
+    observaciones: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
+
   {
     _id: false,
   },
@@ -72,11 +84,17 @@ const parteTrabajoSchema = new mongoose.Schema(
 
 const ordenTrabajoSchema = new mongoose.Schema(
   {
+    // ============================
+    // DATOS DE LA ORDEN
+    // ============================
+
     odt: {
       type: String,
       required: true,
       trim: true,
       uppercase: true,
+      unique: true,
+      index: true,
     },
 
     calle: {
@@ -84,15 +102,18 @@ const ordenTrabajoSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     nro: {
       type: String,
       trim: true,
     },
+
     localidad: {
       type: String,
       trim: true,
       index: true,
     },
+
     direccionCompleta: {
       type: String,
       trim: true,
@@ -108,14 +129,17 @@ const ordenTrabajoSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
     largo: {
       type: Number,
       default: 0,
     },
+
     cantidad: {
       type: Number,
       default: 0,
     },
+
     mts: {
       type: Number,
       default: 0,
@@ -125,10 +149,12 @@ const ordenTrabajoSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+
     equipo: {
       type: String,
       trim: true,
     },
+
     tipoCantidad: {
       type: String,
       trim: true,
@@ -144,10 +170,9 @@ const ordenTrabajoSchema = new mongoose.Schema(
       default: "",
     },
 
-    parteTrabajo: {
-      type: parteTrabajoSchema,
-      default: () => ({}),
-    },
+    // ============================
+    // ESTADO
+    // ============================
 
     estado: {
       type: String,
@@ -155,23 +180,113 @@ const ordenTrabajoSchema = new mongoose.Schema(
       default: "PENDIENTE",
       index: true,
     },
+    historialEstados: [
+      {
+        estado: {
+          type: String,
+          enum: ESTADOS_ORDEN,
+        },
 
-    cuadrilla: {
-      type: String,
-      trim: true,
-      index: true,
-    },
+        fecha: {
+          type: Date,
+          default: Date.now,
+        },
 
-    fechaHojaRuta: {
-      type: Date,
-      index: true,
-    },
+        usuario: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          default: null,
+        },
+
+        comentario: {
+          type: String,
+          trim: true,
+          default: "",
+        },
+      },
+    ],
 
     prioridad: {
       type: String,
       enum: PRIORIDADES_ORDEN,
       default: "MEDIA",
     },
+
+    // ============================
+    // ASIGNACIÓN
+    // ============================
+
+    cuadrilla: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Cuadrilla",
+      default: null,
+      index: true,
+    },
+
+    fechaAsignacion: {
+      type: Date,
+      default: null,
+    },
+
+    fechaInicioTrabajo: {
+      type: Date,
+      default: null,
+    },
+
+    fechaFinTrabajo: {
+      type: Date,
+      default: null,
+    },
+
+    asignadoPor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    asignadoPor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    // ============================
+    // PARTE DE TRABAJO
+    // ============================
+
+    parteTrabajo: {
+      type: parteTrabajoSchema,
+      default: () => ({}),
+    },
+    historialEstados: [
+      {
+        estado: {
+          type: String,
+          required: true,
+        },
+
+        fecha: {
+          type: Date,
+          default: Date.now,
+        },
+
+        usuario: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          default: null,
+        },
+
+        comentario: {
+          type: String,
+          trim: true,
+          default: "",
+        },
+      },
+    ],
+
+    // ============================
+    // OBSERVACIONES
+    // ============================
 
     observaciones: {
       type: String,
@@ -187,9 +302,14 @@ const ordenTrabajoSchema = new mongoose.Schema(
       },
     ],
 
+    // ============================
+    // AUDITORÍA
+    // ============================
+
     creadoPor: {
-      type: String,
-      trim: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
 
     actualizadoPor: {
@@ -203,6 +323,10 @@ const ordenTrabajoSchema = new mongoose.Schema(
   },
 );
 
+// ============================
+// MIDDLEWARES
+// ============================
+
 ordenTrabajoSchema.pre("save", function (next) {
   const partes = [this.calle, this.nro, this.localidad].filter(Boolean);
   this.direccionCompleta = partes.join(" ");
@@ -215,14 +339,22 @@ ordenTrabajoSchema.pre("findOneAndUpdate", function (next) {
 
   if (data.calle || data.nro || data.localidad) {
     const partes = [data.calle, data.nro, data.localidad].filter(Boolean);
+
     data.direccionCompleta = partes.join(" ");
   }
 
   next();
 });
 
-ordenTrabajoSchema.index({ odt: 1 }, { unique: true });
-ordenTrabajoSchema.index({ estado: 1, cuadrilla: 1, fechaHojaRuta: 1 });
+// ============================
+// ÍNDICES
+// ============================
+
+ordenTrabajoSchema.index({
+  estado: 1,
+  cuadrilla: 1,
+  fechaAsignacion: 1,
+});
 
 const OrdenTrabajo = mongoose.model("OrdenTrabajo", ordenTrabajoSchema);
 

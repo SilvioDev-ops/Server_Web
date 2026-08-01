@@ -9,6 +9,11 @@ import {
   getOrdenes,
   updateEstadoOrden,
   updateOrden,
+  asignarCuadrilla,
+  reasignarCuadrilla,
+  getOrdenesSinAsignar,
+  iniciarTrabajo,
+  finalizarTrabajo,
 } from "../controllers/ordenTrabajo.controller.js";
 
 import {
@@ -42,8 +47,20 @@ router.post("/", createOrdenValidator, validateRequest, createOrden);
 
 router.put("/:id", updateOrdenValidator, validateRequest, updateOrden);
 
-router.patch("/:id/estado", updateEstadoValidator, validateRequest, updateEstadoOrden);
+router.patch(
+  "/:id/estado",
+  updateEstadoValidator,
+  validateRequest,
+  updateEstadoOrden,
+);
 
 router.delete("/:id", validateOrdenId, validateRequest, deleteOrden);
+
+router.patch("/:id/asignar", asignarCuadrilla);
+router.patch("/:id/reasignar", reasignarCuadrilla);
+router.get("/sin-asignar", getOrdenesSinAsignar);
+router.get("/:id", getOrdenById);
+router.patch("/:id/iniciar-trabajo", iniciarTrabajo);
+router.patch("/:id/finalizar-trabajo", finalizarTrabajo);
 
 export default router;

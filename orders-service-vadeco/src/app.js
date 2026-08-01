@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 import ordenTrabajoRoutes from "./routes/ordenTrabajo.routes.js";
+import cuadrillaRoutes from "./routes/cuadrilla.routes.js";
 import notFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+app.use("/api/cuadrillas", cuadrillaRoutes);
 app.use("/api/ordenes", ordenTrabajoRoutes);
 
 app.use(notFound);
