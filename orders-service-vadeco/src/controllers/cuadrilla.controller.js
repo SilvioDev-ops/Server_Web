@@ -1,4 +1,4 @@
-import Cuadrilla from "../models/Cuadrilla.js";
+import Cuadrilla from "../models/cuadrilla.js";
 import OrdenTrabajo from "../models/OrdenTrabajo.js";
 // ==========================
 // Obtener todas las cuadrillas
